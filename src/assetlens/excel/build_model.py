@@ -278,7 +278,7 @@ def sheet_budget(wb, py: pd.DataFrame):
         put(ws, f"A{4 + i}", lab); put(ws, f"B{4 + i}", rv, "input", "#,##0.0"); put(ws, f"C{4 + i}", pt, "input", "#,##0.0")
     put(ws, "A8", "Prior-year total", bold=True); put(ws, "B8", "=SUM(B4:B7)", fmt="#,##0.0"); put(ws, "C8", "=SUM(C4:C7)", fmt="#,##0.0")
     put(ws, "A10", "Top-down revenue growth target"); put(ws, "B10", SC["budget_targets"]["revenue_growth"], "input", "0.0%")
-    put(ws, "C10", "UNVERIFIED secondary-source target - confirm from primary material")
+    put(ws, "C10", "Revenue growth 8% = AssetLens assumption (GS publishes none); 30% margin = GS 10-Q AWM target (verified)")
     put(ws, "A11", "Top-down pre-tax margin target"); put(ws, "B11", SC["budget_targets"]["pretax_margin"], "input", "0.0%")
     put(ws, "A12", "Variance threshold (%)"); put(ws, "B12", 0.05, "input", "0%")
     header(ws, 14, ["", "Prior year", "Budget (top-down)", "Forecast Year 1", "Variance vs budget", "Variance %", "Flag"])

@@ -3,9 +3,9 @@
 | ID | Item | Reason | Status |
 |----|------|--------|--------|
 | G1 | GS AWM quarterly revenue/pre-tax/flows 2019Q1-2021Q4 (AWM perimeter) | Perimeter re-based in FY2022 10-K; only legacy "Asset Management" quarterlies exist (different perimeter). AWM annual FY2020/21 revenue and pre-tax available. | Not fillable from filings |
-| G2 | GS AWM Q3 2026 operating expenses & pre-tax | 10-Q not yet filed (due ≈ 30 Oct 2026); earnings release exhibit only has revenue lines + AUS | Re-run `run_gs` after the 10-Q |
+| G2 | GS AWM Q3 2026 operating expenses & pre-tax | 10-Q not yet filed; `make refresh` (and the AssetLensRefresh scheduled task) fills it automatically once EDGAR has it | Automated |
 | G3 | GS AWM quarterly compensation | ASU 2023-07 segment comp only in 10-K (annual 2022-25) | Annual only |
-| G4 | GS AWM Q4 2025 derived on mixed vintage | FY2025 10-K recast vs 9M original | Auto-resolves after Q3'26 10-Q |
+| G4 | GS AWM Q4 2025 derived on mixed vintage | Resolved automatically by the same refresh (Q3-26 10-Q carries recast 9M-25) | Automated |
 | G5 | GS AWM 2019Q1-2022Q3 AUS roll-forward on AWM basis | Re-based; legacy roll-forward not comparable. Total-AUS ending balance IS available 2018-12 → 2026-09 | Partial |
 | G6 | TROW AUM roll-forward 2020-Q3 and 2021-Q4 | RESOLVED: 'Acquired AUM' / 'Acquired fee-basis AUM' rows (Legg-Mason-style acquisitions) are now treated as other changes; all 30 quarters chain | Closed |
 | G7 | BLK begin/market/FX split | Releases give net flows, ending AUM and base fees only; market impact stored as residual | By construction |
@@ -13,7 +13,7 @@
 | G9 | Peer Q3-2026 for TROW and IVZ | Not yet reported (late Oct) | Re-run after release |
 | G10 | MS, JPM, BEN peers | Phase 2 | Not started |
 | G11 | ICE BofA bond total-return indices before Oct-2023 | FRED now serves ~3 years only (licensing). Bond return proxy = y10/4 - 6.5 x dy (corr 0.955 with ICE over 11 overlapping quarters) | Proxy used in M5 |
-| G12 | MS IM AUM roll-forward: 2021-Q1, 2023-Q2 and some Q4s missing | Three layouts parsed (2021-23 transposed, 2023-25 six-column, 2024-26 seven-column); remaining gaps from 10-K-only Q4s and one unparsed quarter | Partial |
+| G12 | MS IM P&L: 2019 and Q4 2020-21; AUM roll-forward complete 2021-Q1 to 2026-Q2 | 2020+ layouts parsed (three AUM layouts, footnote-tolerant labels); 2019 10-Q layout and FY2020-21 10-K segment tables not parsed | Minor |
 | G13 | JPM AWM segment P&L | RESOLVED for 2019-26: Q4 2019-22 derived as FY - Q1..Q3 (FY from 10-K, quarters from 10-Qs; segment recasts between filings can distort derived Q4s, e.g. Q4 2020). Fee line relabelled in 2023 (definitional break) | Closed with caveat |
 | G14 | BEN AUM roll-forward before 2020-Q3 | RESOLVED: 'Long-term' flow detail rows excluded (already inside Net flows); all 30 quarters chain. Operating income missing in two fiscal-Q4 releases | Closed |
 | G15 | MS Wealth Management client assets / net new assets | Not parsed (WM P&L only, ticker MSWM) | Open |

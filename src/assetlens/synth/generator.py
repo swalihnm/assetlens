@@ -27,7 +27,7 @@ def public_quarterly() -> pd.DataFrame:
     con.close()
     w = f.pivot_table(index="period_end", columns="metric", values="value", aggfunc="first").sort_index()
     q = CFG["quarters"]
-    w = w[(w.index >= q["start"]) & (w.index <= q["end"])]
+    w = w[(w.index >= q["start"]) & ((w.index <= q["end"]) if q["end"] != "latest" else True)]
     need = ["rev_mgmt_other_fees", "rev_incentive_fees", "rev_private_banking_lending", "rev_investments",
             "net_revenues", "provision", "opex", "pretax_earnings", "aum_end", "aus_equity",
             "aus_fixed_income", "aus_liquidity", "aus_alternatives"]

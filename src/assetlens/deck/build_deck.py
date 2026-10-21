@@ -142,7 +142,7 @@ def build() -> Path:
         f"${n['bear_pretax_8q']:.1f}bn bear, ${n['stress_pretax_8q']:.1f}bn stress.",
         f"Since Dec-2021 net flows added ${n['GS_flows_bn']:.0f}bn of AUS ({n['GS_organic_pct']:.0f}% of the opening balance), market and other ${n['GS_market_bn']:.0f}bn.",
         f"Key risks: incentive-fee and Investments volatility, liquidity-product flows reversing, fee compression, lending credit costs. "
-        f"H1-2026 pre-tax earnings ran {n['H1_pretax_var_pct']:.0f}% versus an unverified top-down budget."], 11, bullets=True)
+        f"H1-2026 pre-tax earnings ran {n['H1_pretax_var_pct']:.0f}% versus a top-down budget (30% margin target per GS 10-Q; 8% revenue growth is an AssetLens assumption)."], 11, bullets=True)
     # 4 profitability & pricing
     s = _slide(prs, "Profitability and pricing: allocation changes the ranking, marginal cost sets the floor",
                "Synthetic business split calibrated to GS AWM totals; allocation methods per M8; pricing engine per M9")
@@ -155,7 +155,7 @@ def build() -> Path:
         "Rule: never price below marginal break-even; target fully allocated break-even plus a 15% hurdle margin."], 11, bullets=True)
     # 5 growth
     s = _slide(prs, "Growth and strategic initiatives: GCC expansion case and savings programme",
-               "AssetLens GCC business case (config/assumptions.yaml, illustrative; tax rates to be verified); synthetic savings tracker")
+               "AssetLens GCC business case (config/assumptions.yaml, illustrative; tax: UAE 15% minimum top-up tax, KSA 20%); synthetic savings tracker")
     s.shapes.add_picture(str(pics["gcc"]), Inches(0.4), Inches(1.2), width=Inches(6.6))
     _tb(s, 7.2, 1.3, 5.7, 5, [
         f"Base case (DIFC): NPV ${n['gcc_npv']:.0f}m, IRR {n['gcc_irr']:.0f}%, payback {n['gcc_payback']:.1f} years, peak funding ${n['gcc_peak']:.0f}m.",
@@ -171,7 +171,7 @@ def build() -> Path:
         "Quality gate: AUM roll-forwards are accepted only if begin + flows + market + other = end and chain with the prior quarter. GS reconciliation checks pass 19/19 per test.",
         "GS perimeter: AWM segment re-based in the FY2022 10-K; quarterly AWM series starts 2022 Q1. Q3-2026 opex and pre-tax not yet filed (10-Q due).",
         "Fee yield = quarterly fees x4 / average AUM; organic growth = net flows x4 / beginning AUM; margins GAAP operating (GS: segment pre-tax).",
-        "Forecast: driver-based (flows, market returns, fee compression, comp ratio with floor); scenario inputs are assumptions. Budget targets from press reports are unverified.",
+        "Forecast: driver-based (flows, market returns, fee compression, comp ratio with floor); scenario inputs are assumptions. Budget: 30% margin target is from GS's 10-Q; 8% revenue growth is an assumption.",
         "Synthetic: business-unit P&L, cost pools, headcount, advisors, GL, T&E, savings. Calibrated so totals equal public segment figures.",
         DISC], 10, bullets=True)
     OUT.parent.mkdir(parents=True, exist_ok=True)

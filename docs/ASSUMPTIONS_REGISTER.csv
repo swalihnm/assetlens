@@ -19,8 +19,8 @@ A017,Scenario bear: organic growth,"{'alternatives': 0.02, 'equity': 0.0, 'fixed
 A018,Scenario bear: equity return path (qtr),"[-0.03, -0.02, 0.0, 0.01, 0.01, 0.015, 0.015, 0.015]",per quarter,assumption,Scenario design,Abdulla Swalih NM,4
 A019,Scenario stress: organic growth,"{'alternatives': -0.04, 'equity': -0.08, 'fixed_income': -0.04, 'liquidity': 0.06}",p.a. by class,assumption,Scenario design,Abdulla Swalih NM,4
 A020,Scenario stress: equity return path (qtr),"[-0.15, -0.118, 0.02, 0.02, 0.02, 0.02, 0.02, 0.02]",per quarter,assumption,Scenario design,Abdulla Swalih NM,4
-A021,Budget growth target,0.08,p.a.,UNVERIFIED secondary press reports,Top-down budget illustration,Abdulla Swalih NM,
-A022,Budget pre-tax margin target,0.3,%,UNVERIFIED secondary press reports,Top-down budget illustration,Abdulla Swalih NM,
+A021,Budget growth target,0.08,p.a.,AssetLens assumption (GS publishes no total revenue growth target),Top-down budget illustration,Abdulla Swalih NM,
+A022,Budget pre-tax margin target,0.3,%,GS 10-Q Jun-2026 (acc. 0000886982-26-000297): AWM pre-tax margin approx. 30% medium-term target (verified),Top-down budget illustration,Abdulla Swalih NM,
 A023,GCC: base_location,DIFC,,assumption (illustrative),Growth case,Abdulla Swalih NM,
 A024,GCC: years,7,,assumption (illustrative),Growth case,Abdulla Swalih NM,
 A025,GCC: advisors_hired,"[6, 8, 8, 8, 6, 4, 4]",,assumption (illustrative),Growth case,Abdulla Swalih NM,
@@ -40,11 +40,11 @@ A038,GCC: regulatory_capital_musd,15.0,,assumption (illustrative),Growth case,Ab
 A039,GCC: discount_rate,0.11,,assumption (illustrative),Growth case,Abdulla Swalih NM,
 A040,GCC: terminal_growth,0.03,,assumption (illustrative),Growth case,Abdulla Swalih NM,
 A041,GCC: variable_comp_pct_of_revenue,0.1,,assumption (illustrative),Growth case,Abdulla Swalih NM,
-A042,GCC location DIFC,"{'cost_index': 1.0, 'setup_capex_musd': 4.0, 'licence_musd_yr': 0.6, 'tax_rate': 0.09, 'note': 'Dubai; UAE CT 9%, qualifying free-zone income may be 0% - VERIFY'}",,assumption - VERIFY tax rates,Location comparison,Abdulla Swalih NM,
-A043,GCC location KAFD,"{'cost_index': 0.92, 'setup_capex_musd': 4.5, 'licence_musd_yr': 0.5, 'tax_rate': 0.2, 'note': 'Riyadh; KSA CIT 20% on foreign share - VERIFY'}",,assumption - VERIFY tax rates,Location comparison,Abdulla Swalih NM,
-A044,GCC location ADGM,"{'cost_index': 0.98, 'setup_capex_musd': 3.8, 'licence_musd_yr': 0.5, 'tax_rate': 0.09, 'note': 'Abu Dhabi; UAE CT 9% - VERIFY'}",,assumption - VERIFY tax rates,Location comparison,Abdulla Swalih NM,
+A042,GCC location DIFC,"{'cost_index': 1.0, 'setup_capex_musd': 4.0, 'licence_musd_yr': 0.6, 'tax_rate': 0.15, 'note': 'Dubai. UAE CT 9% / 0% for qualifying free-zone income, but a 15% Domestic Minimum Top-up Tax applies from FY2025 to groups with revenue >= EUR 750m (Cabinet Decision 142/2024; DLA Piper, Andersen), so 15% is used. Confirm with tax advisers.'}",,assumption - VERIFY tax rates,Location comparison,Abdulla Swalih NM,
+A043,GCC location KAFD,"{'cost_index': 0.92, 'setup_capex_musd': 4.5, 'licence_musd_yr': 0.5, 'tax_rate': 0.2, 'note': 'Riyadh. KSA CIT 20% on the foreign-owned share (secondary sources; ZATCA text not retrieved). Confirm with tax advisers.'}",,assumption - VERIFY tax rates,Location comparison,Abdulla Swalih NM,
+A044,GCC location ADGM,"{'cost_index': 0.98, 'setup_capex_musd': 3.8, 'licence_musd_yr': 0.5, 'tax_rate': 0.15, 'note': 'Abu Dhabi. Same UAE DMTT logic as DIFC: 15%. Confirm with tax advisers.'}",,assumption - VERIFY tax rates,Location comparison,Abdulla Swalih NM,
 A045,Synthetic: seed,20261021,,synthetic generator (config/synthetic.yaml),Calibrated to public segment totals,Abdulla Swalih NM,
-A046,Synthetic: quarters,"{'start': '2022-03-31', 'end': '2026-06-30'}",,synthetic generator (config/synthetic.yaml),Calibrated to public segment totals,Abdulla Swalih NM,
+A046,Synthetic: quarters,"{'start': '2022-03-31', 'end': 'latest'}",,synthetic generator (config/synthetic.yaml),Calibrated to public segment totals,Abdulla Swalih NM,
 A047,Synthetic: gl_quarters,8,,synthetic generator (config/synthetic.yaml),Calibrated to public segment totals,Abdulla Swalih NM,
 A048,Synthetic: businesses,"{'PE': {'name': 'Public Equity', 'intensity': 1.0, 'yield_rel': 1.0, 'fee_asset': 'aus_equity'}, 'FIMA': {'name': 'Fixed Income & Multi-Asset', 'intensity': 0.95, 'yield_rel': 0.55, 'fee_asset': 'aus_fixed_income'}, 'LIQ': {'name': 'Liquidity Solutions', 'intensity': 0.7, 'yield_rel': 0.12, 'fee_asset': 'aus_liquidity'}, 'ALT': {'name': 'Alternatives / Private Markets', 'intensity': 0.85, 'yield_rel': 2.4, 'fee_asset': 'aus_alternatives'}, 'PWM': {'name': 'Private Wealth Management', 'intensity': 1.1, 'yield_rel': 1.0, 'fee_asset': None}, 'PBL': {'name': 'Private Banking & Lending', 'intensity': 0.6, 'yield_rel': 1.0, 'fee_asset': None}}",,synthetic generator (config/synthetic.yaml),Calibrated to public segment totals,Abdulla Swalih NM,
 A049,Synthetic: pwm_fee_share,0.3,,synthetic generator (config/synthetic.yaml),Calibrated to public segment totals,Abdulla Swalih NM,

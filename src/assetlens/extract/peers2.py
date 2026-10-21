@@ -93,14 +93,14 @@ def ms_aum_transposed(sp, mt, begin_date: str) -> list[dict]:
         if not all(k in low for k in ("inflows", "outflows", "market impact", "fixed income", "liquidity")):
             continue
         rr = rows(t)
-        lab = {norm(l): n for l, n, _ in rr}
+        lab = {re.sub(r"\s+\d+(,\d+)*$", "", norm(l)): n for l, n, _ in rr}          # drop footnote digits ("Other 1")
         dates = [(l, n) for l, n, _ in rr if re.fullmatch(r"\w+ \d{1,2}, \d{4}", norm(l))]
         if len(dates) != 2 or pd.Timestamp(dates[0][0]) != pd.Timestamp(begin_date):
             continue
         try:
             b, e = dates[0][1][-1], dates[1][1][-1]
             inf, outf, mk = lab["Inflows"][-1], lab["Outflows"][-1], lab["Market Impact"][-1]
-            oth = lab.get("Other", [0.0])[-1]
+            oth = sum(n[-1] for k, n in lab.items() if re.match(r"(Other|Acquisition|Acquired)", k) and n)
         except (KeyError, IndexError):
             continue
         nf = inf + outf
@@ -123,7 +123,12 @@ def run_ms(client: EdgarClient, m: pd.DataFrame) -> pd.DataFrame:
         for unit, lm, anchors in [("IM", MS_IM, ["Asset management and related fees", "Performance-based income", "Net revenues", "Income before provision"]),
                                   ("WM", MS_WM, ["Asset management", "Transactional", "Net interest", "Net revenues", "Compensation and benefits"])]:
             mt = meta("MS", unit, r.reportDate, r.url, r.accessionNumber, r.form, r.filingDate)
-            out += _pnl(sp, mt, anchors, lm, pt)
+            got = _pnl(sp, mt, anchors, lm, pt)
+            if not got and unit == "IM":    # 2019-20 layout: IM identified by size (net revenues < $2.5bn/qtr, < $9bn/yr; fees > half of revenue)
+                cap = 9_000 if annual else 2_500
+                got = _pnl(sp, mt, ["Asset management", "Net revenues", "Compensation and benefits", "Income before"], {**MS_IM, r"^Asset management(\s+\d+)?$": "fees_asset_management"}, pt,
+                           accept=lambda g, cap=cap: g.get("net_revenues", {"value": 1e9})["value"] < cap and g.get("fees_asset_management", {"value": 0})["value"] > 0.5 * g["net_revenues"]["value"])
+            out += got
         mt = meta("MS", "IM", r.reportDate, r.url, r.accessionNumber, r.form, r.filingDate)
         pe = pd.Timestamp(r.reportDate)
         begin = (pe - pd.offsets.YearEnd(1)).strftime("%Y-%m-%d") if annual else (pe - pd.offsets.QuarterEnd(1)).strftime("%Y-%m-%d")

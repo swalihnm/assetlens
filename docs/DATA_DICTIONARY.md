@@ -154,7 +154,7 @@ Tables flagged **synthetic** carry a `synthetic = true` column.
 | synthetic | BOOLEAN |
 
 ## fact_financials
-2,443 rows
+2,475 rows
 
 | Column | Type |
 |---|---|
@@ -262,7 +262,7 @@ Tables flagged **synthetic** carry a `synthetic = true` column.
 | synthetic | BOOLEAN |
 
 ## fact_provenance
-2,443 rows
+2,475 rows
 
 | Column | Type |
 |---|---|
@@ -422,7 +422,7 @@ Tables flagged **synthetic** carry a `synthetic = true` column.
 | significant | BOOLEAN |
 
 ## mart_market_beta_rolling
-110 rows
+114 rows
 
 | Column | Type |
 |---|---|
@@ -486,7 +486,7 @@ Tables flagged **synthetic** carry a `synthetic = true` column.
 | synthetic | BOOLEAN |
 
 ## mart_peer_benchmark
-197 rows
+201 rows
 
 | Column | Type |
 |---|---|

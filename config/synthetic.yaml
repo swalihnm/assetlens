@@ -1,6 +1,6 @@
 # Synthetic AWM internal data - every number here is an ASSUMPTION (see docs/ASSUMPTIONS_REGISTER.csv)
 seed: 20261021
-quarters: {start: "2022-03-31", end: "2026-06-30"}      # quarters with a full public P&L (opex known)
+quarters: {start: "2022-03-31", end: "latest"}          # all quarters with a full public P&L (opex known)
 gl_quarters: 8                                          # last N quarters in the general ledger
 businesses:
   PE:   {name: "Public Equity",                     intensity: 1.00, yield_rel: 1.00, fee_asset: aus_equity}

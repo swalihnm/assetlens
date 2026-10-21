@@ -31,15 +31,15 @@ _Last updated: 2026-10-21. Spec: AssetLens_Project_Spec.md. Phase 1 target = F&S
 
 ## Still to do
 1. Claude comparison for the AI layer (needs ANTHROPIC_API_KEY)
-2. Remaining parser gap (low value): a few Morgan Stanley IM quarters (DATA_GAPS G12). TROW, BEN and JPM gaps are closed; all peer AUM roll-forwards now chain with zero breaks
+2. Parser coverage: Morgan Stanley IM P&L starts 2020 (Q4 2020-21 P&L missing) and AUM roll-forward 2021-26 complete; all other peers complete
 3. Build the .pbix in Power BI Desktop (needs Windows Desktop)
 4. Q3-2026 GS 10-Q (about 30 Oct): rerun extract + warehouse
 
 ## Open items for you
 - Power BI: build the .pbix from `powerbi/model.md`, then check `outputs/powerbi/dax_spot_checks.csv`.
-- Confirm management targets (30% margin, ~8% growth) from a primary source; they are marked UNVERIFIED in the budget model.
-- Verify GCC corporate tax rates in `config/assumptions.yaml`.
-- Q3-2026 GS 10-Q (≈30 Oct): re-run `make extract warehouse` to fill opex/pre-tax and fix the Q4-2025 mixed-vintage quarter.
+- Budget targets resolved: 30% AWM pre-tax margin verified in GS's 10-Q (acc. 0000886982-26-000297); the 8% revenue growth is labelled an AssetLens assumption because GS publishes no such target.
+- GCC tax rates updated from secondary sources: UAE 15% (minimum top-up tax for >= EUR 750m groups), KSA 20%. A tax adviser should confirm before any real decision.
+- Goldman Q3-2026 10-Q (due about 30 Oct): `make refresh` rebuilds everything automatically when it appears. A user-level Windows scheduled task `AssetLensRefresh` runs it daily from 30 Oct 07:30 (no-op until the filing exists) and deletes itself after a successful refresh.
 - FRED key saved in `.env` (gitignored); current code uses the public CSV endpoint and doesn't need it.
 
 ## Decisions made on your behalf (details in docs/DECISIONS.md)

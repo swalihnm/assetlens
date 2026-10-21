@@ -44,3 +44,5 @@ analytics:
 	uv run python -m assetlens.sales.analytics && uv run python -m assetlens.comp.analysis
 app:
 	uv run streamlit run app/streamlit_app.py
+refresh:
+	uv run python -m assetlens.refresh

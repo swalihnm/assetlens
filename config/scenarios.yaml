@@ -46,4 +46,4 @@ comp_fixed_floor_share: 0.85        # fixed floor as share of base-period comp
 noncomp_variable_rate: 0.10         # variable non-comp as % of net revenue (assumption)
 inflation_annual: 0.03
 pbl: {nim0: 0.0250, nim_beta_to_short_rate: 0.35, loan_growth_annual: 0.05}
-budget_targets: {revenue_growth: 0.08, pretax_margin: 0.30, source: "secondary press reports - UNVERIFIED"}
+budget_targets: {revenue_growth: 0.08, pretax_margin: 0.30, source: "pretax_margin 30% = GS 10-Q (Jun-2026, acc. 0000886982-26-000297, MD&A p.116): AWM target of approximately 30% within 3-5 years of YE2025 (VERIFIED, primary). revenue_growth 8% = AssetLens assumption: GS publishes no total-revenue growth target (it targets double-digit growth in alternatives Management and other fees)"}

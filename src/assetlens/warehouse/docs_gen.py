@@ -83,8 +83,8 @@ def assumptions_register() -> pd.DataFrame:
     for s, d in sc["scenarios"].items():
         add(f"Scenario {s}: organic growth", d["organic_annual"], "p.a. by class", "assumption", "Scenario design", rank=4)
         add(f"Scenario {s}: equity return path (qtr)", d["equity_ret_q"], "per quarter", "assumption", "Scenario design", rank=4)
-    add("Budget growth target", sc["budget_targets"]["revenue_growth"], "p.a.", "UNVERIFIED secondary press reports", "Top-down budget illustration")
-    add("Budget pre-tax margin target", sc["budget_targets"]["pretax_margin"], "%", "UNVERIFIED secondary press reports", "Top-down budget illustration")
+    add("Budget growth target", sc["budget_targets"]["revenue_growth"], "p.a.", "AssetLens assumption (GS publishes no total revenue growth target)", "Top-down budget illustration")
+    add("Budget pre-tax margin target", sc["budget_targets"]["pretax_margin"], "%", "GS 10-Q Jun-2026 (acc. 0000886982-26-000297): AWM pre-tax margin approx. 30% medium-term target (verified)", "Top-down budget illustration")
     for k, v in ga.items():
         if k != "locations":
             add(f"GCC: {k}", v, "", "assumption (illustrative)", "Growth case", rank="")
