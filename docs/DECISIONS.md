@@ -40,3 +40,12 @@ Format: date · decision · why.
 - GS FY2024 and FY2025 10-Ks tag AWM **Compensation and benefits expenses** and **Other operating expenses** (FY2022-FY2025
   shown). Segment comp ratio is therefore available **annually for 2022-2025 only**; not in 10-Q segment tables → no
   quarterly AWM comp ratio (DATA_GAPS).
+
+## M5 market sensitivity (2026-10-21)
+- Regress quarterly market impact % of beginning AUM on S&P 500 quarterly return and a **duration-based bond proxy** (HC3 robust errors). ICE BofA series from FRED cover only Oct-2023 onward.
+- Result: TROW equity beta 0.85 (R2 0.98), BLK 0.66 (R2 0.95), IVZ 0.64, GS 0.07 (not significant, n=19). GS's disclosed equity+alternatives share is 28-40%, so the GS estimate is BELOW what the mix implies: GS market appreciation includes FX, third-party-distributed assets and lagged alternative marks, and has only 19 post-recast quarters. Treat the GS beta as inconclusive, not as a finding.
+- GS lending revenue vs policy rate: 0.11 pp QoQ growth per 1 pp change in fed funds (p = 0.39, n = 18) - not distinguishable from zero; the scenario model's rate beta (0.35) remains an assumption.
+
+## M6 Monte Carlo and backtest (2026-10-21)
+- Monte Carlo: 10,000 paths; moving-block bootstrap (block = 2 quarters) of joint S&P 500 / bond-proxy quarterly returns from the FRED window (39 quarters, 2016-2026, a strong-equity era, so the median path is above the deterministic base: Q8 margin P50 32.0% vs 29.3%). Incentive fees, Investments and organic flows are linked to the equity path plus noise (assumptions in `montecarlo.stochastic_shocks`). P(Q8 margin < 25%) = 3.2%; P(any quarter < 25%) = 13.1%.
+- Backtest target = GS AWM management & other fees (the structurally modelled line), 8 origins, horizons 1-4, 26 forecast/actual pairs. MAPE: model with realised markets 2.5%, model with assumed markets 3.5%, best baseline (drift) 4.5%, naive 8.1%, seasonal naive 12.6%. So the conditional model cuts error 44% vs the best baseline and the unconditional 22%. Sample is small (26 pairs, 18 quarters of AWM history) - indicative only. Runs logged to MLflow (sqlite, data/mlflow.db).

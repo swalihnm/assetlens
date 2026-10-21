@@ -13,3 +13,4 @@ dbt/target/
 dbt/logs/
 logs/
 mlruns/
+data/mlflow.db

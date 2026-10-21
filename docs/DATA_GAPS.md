@@ -12,3 +12,4 @@
 | G8 | TROW quarterly releases before 2023-05 | Q1-Q3 earnings were not furnished on 8-K; 10-Q tables used (P&L and AUM) | Covered via 10-Q |
 | G9 | Peer Q3-2026 for TROW and IVZ | Not yet reported (late Oct) | Re-run after release |
 | G10 | MS, JPM, BEN peers | Phase 2 | Not started |
+| G11 | ICE BofA bond total-return indices before Oct-2023 | FRED now serves ~3 years only (licensing). Bond return proxy = y10/4 - 6.5 x dy (corr 0.955 with ICE over 11 overlapping quarters) | Proxy used in M5 |
