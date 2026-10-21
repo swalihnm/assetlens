@@ -29,8 +29,6 @@ def ratio_benchmark() -> pd.DataFrame:
     peers = _q("""select ticker, period_end, comp_ratio_t4q from mart_peer_benchmark where comp_ratio_t4q is not null
                   qualify row_number() over (partition by ticker order by period_end desc) = 1""")
     peers["basis"] = "T4Q, company"
-    f = _q("select metric, period_end, value from fact_provenance p join fact_financials f using(fact_id) "
-           "where f.ticker='GS' and f.metric in ('comp_benefits')")
     cur = pd.read_csv(f"{DB.parents[2]}/data/interim/gs_facts_latest.csv")
     a = cur[(cur.perimeter == "AWM") & (cur.period_type == "FY") & cur.metric.isin(["comp_benefits", "net_revenues"])]
     a = a.pivot_table(index="period_end", columns="metric", values="value", aggfunc="first").dropna()

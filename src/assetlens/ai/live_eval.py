@@ -14,14 +14,13 @@ def run(provider: str = "ollama", model: str = "gemma4:31b-cloud") -> dict:
     its = items()
     out = {"model": model, "provider": provider, "by_category": {}}
     res = T.execution_accuracy(its, T.LLMGenerator(gw))
-    out.update({k: v for k, v in res.items() if k != "failures"})
+    out.update({k: v for k, v in res.items() if k not in ("failures", "flags")})
     for cat in sorted({i.category for i in its}):
-        sub = [i for i in its if i.category == cat]
-        r = T.execution_accuracy(sub, T.LLMGenerator(gw))
-        out["by_category"][cat] = f"{r['correct']}/{r['n']}"
+        idx = [k for k, i in enumerate(its) if i.category == cat]
+        out["by_category"][cat] = f"{sum(res['flags'][k] for k in idx)}/{len(idx)}"
     out["calls"] = len(gw.calls)
     out["mean_latency_s"] = sum(c.latency_s for c in gw.calls) / max(1, len(gw.calls))
-    out["failures_sample"] = [(f[0], f[2]) for f in res["failures"][:8]]
+    out["failures_sample"] = [(f[0], f[1], f[2]) for f in res["failures"][:12]]
     return out
 
 

@@ -368,7 +368,6 @@ def sheet_mandate(wb, m, p):
     for r, lab in rows.items():
         put(ws, f"A{r}", lab, bold=r in (42, 43))
     for j, c in enumerate(yc):
-        prev = L(1 + j + 2) if j else None
         put(ws, f"{c}30", f"=$B$4*(1+$B$5)^{c}29", fmt="#,##0.0")
         put(ws, f"{c}31", f"={L(2 + j)}30" if j else "=$B$4", fmt="#,##0.0")
         put(ws, f"{c}32", f"=({c}30+{c}31)/2", fmt="#,##0.0")

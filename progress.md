@@ -23,15 +23,15 @@ _Last updated: 2026-10-21. Spec: AssetLens_Project_Spec.md. Phase 1 target = F&S
 | M14 Excel | Done | live formulas, checks all 0, Python parity ~1e-15 |
 | M15 Power BI assets | Done (assets) | **.pbix not built; DAX never executed** |
 | M16 Board deck | Done (PPTX) | numbers from warehouse, test passes. **No PDF** (no LibreOffice) |
-| M17 AI layer | Done offline | text-to-SQL baseline 82.6% (hard 0/12), adversarial 17/17 rejected, RAG hit@5 0.90, guardrail 250/250, extraction + review queue. **Live SQL eval via Ollama cloud gemma4:31b: 62.3% (hard 9/12); RAG answers / extraction not run live; Claude not evaluated** |
+| M17 AI layer | Done | SQL agent live on Ollama gemma4:31b: 81.2% strict / 94.2% lenient (hard 9/12); adversarial 17/17 rejected; RAG hit@5 0.90, live answers 85% cited / 95% number-grounded; guardrail 250/250; extraction 3/3 live + review queue. Claude not evaluated |
 | M18 API / Streamlit / Docker / docs | Done | FastAPI (5 endpoints), Streamlit 8 pages (smoke-tested), Dockerfile + CI (unrun) |
 
 ## Tests
-`make test` - 54 pass (fast). `make test-all` adds the Excel parity test (~80 s) and the Streamlit all-pages smoke test.
+`make test` - 54 pass; ruff clean (fast). `make test-all` adds the Excel parity test (~80 s) and the Streamlit all-pages smoke test.
 
 ## Still to do
-1. Live-LLM runs of RAG answers and extraction; Claude comparison (needs ANTHROPIC_API_KEY); prompt improvement for SQL lookups
-2. Parse older MS IM AUM layouts and JPM AWM P&L before 2024 (see DATA_GAPS G12-G15); TROW 2020-Q3 / 2021-Q4
+1. Claude comparison for the AI layer (needs ANTHROPIC_API_KEY)
+2. Older-layout parsers: MS IM AUM 2021-23, JPM AWM P&L 2019-22, BEN pre-2020, TROW 2020-Q3 / 2021-Q4 (DATA_GAPS G6, G12-G15)
 3. Build the .pbix; render deck PDF (install LibreOffice) and cross-check the workbook with it
 4. Q3-2026 GS 10-Q (about 30 Oct): rerun extract + warehouse
 

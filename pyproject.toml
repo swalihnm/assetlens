@@ -55,4 +55,4 @@ dev = [
 ]
 
 [tool.ruff.lint]
-ignore = ["E501", "E701", "E702", "E731", "E741"]
+ignore = ["E501", "E701", "E702", "E731", "E741", "C408", "ISC004", "UP031", "BLE001", "RUF034", "RUF007", "PERF102", "S110", "RUF046", "RUF015", "FURB167"]

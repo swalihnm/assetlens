@@ -36,6 +36,13 @@ SCHEMA: dict[str, str] = {
     "mart_backtest_summary": "model, horizon, mape, bias, n",
     "fact_savings": "initiative_id, category, target_savings_musd, implementation_cost_musd, headcount_impact, owner, confidence, realised_to_date_musd (SYNTHETIC)",
 }
+GLOSSARY = """Conventions (from docs/METRICS.md):
+- 'fee yield', 'organic growth', 'margin', 'comp ratio' mean the trailing-four-quarter columns (fee_yield_t4q_bps, organic_growth_t4q, op_margin_t4q, comp_ratio_t4q) unless the question says quarterly.
+- 'latest' = the most recent period_end for which that column IS NOT NULL (columns can be NULL in the newest quarter): ORDER BY period_end DESC LIMIT 1 with a NOT NULL filter on the column.
+- For 'which company is highest/lowest', compare each ticker's latest non-null value (not any single date).
+- 'AUM' / 'assets' = aum_end. Money is in $ millions. Ratios are fractions (0.15 = 15%).
+- Scenario questions use fact_forecast (t = quarters ahead, 1..8). Allocation questions use mart_allocation_rank_sensitivity (T4Q, per method).
+- Ticker codes: GS Goldman Sachs, BLK BlackRock, TROW T. Rowe Price, IVZ Invesco, MS Morgan Stanley, JPM JPMorgan, BEN Franklin."""
 ALLOWED = set(SCHEMA)
 FORBIDDEN_FUNCS = {"read_csv", "read_csv_auto", "read_parquet", "read_json", "glob", "copy", "pragma", "install", "load", "attach", "system", "getenv"}
 MAX_ROWS, MAX_JOINS = 1000, 3
@@ -171,7 +178,7 @@ class LLMGenerator:
     def __call__(self, question: str, error: str | None = None) -> str | None:
         schema = "\n".join(f"- {t}: {c}" for t, c in SCHEMA.items())
         system = ("You write one DuckDB SELECT statement answering the question. Use ONLY these tables:\n" + schema +
-                  "\nReturn only SQL, no prose. Quarter-end dates look like '2026-06-30'. Ratios are fractions. Never modify data.")
+                  "\n" + GLOSSARY + "\nReturn only SQL, no prose. Quarter-end dates look like '2026-06-30'. Ratios are fractions. Never modify data.")
         prompt = question + (f"\nYour previous SQL failed: {error}. Fix it." if error else "")
         sql = self.gw.complete(system, prompt, max_tokens=500).text.strip()
         return re.sub(r"^```(?:sql)?|```$", "", sql, flags=re.MULTILINE).strip() or None
@@ -250,15 +257,22 @@ def _norm(df: pd.DataFrame) -> list[tuple]:
 
 def execution_accuracy(items: list[EvalItem], generator=None) -> dict:
     gen = generator or TemplateGenerator()
-    ok = answered = 0
-    fails = []
+    ok = answered = lenient = 0
+    fails, flags = [], []
     for it in items:
         gold = execute(validate(it.gold_sql))
         res = ask(it.question, gen)
         if res["result"] is not None:
             answered += 1
+            gold_cells = {c for r in _norm(gold) for c in r}
+            res_cells = {c for r in _norm(res["result"]) for c in r}
+            if len(res["result"]) == len(gold) and gold_cells <= res_cells | {c for c in gold_cells if isinstance(c, str) and c not in res_cells}:
+                lenient += 1
             if _norm(res["result"]) == _norm(gold):
                 ok += 1
+                flags.append(True)
                 continue
+        flags.append(False)
         fails.append((it.question, res["sql"], res["error"]))
-    return dict(n=len(items), correct=ok, answered=answered, execution_accuracy=ok / len(items), coverage=answered / len(items), failures=fails)
+    return dict(n=len(items), correct=ok, answered=answered, execution_accuracy=ok / len(items), coverage=answered / len(items), failures=fails, flags=flags,
+                lenient_accuracy=lenient / len(items))

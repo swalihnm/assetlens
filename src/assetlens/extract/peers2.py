@@ -68,6 +68,14 @@ def ms_aum(sp, mt, begin_date: str) -> list[dict]:
                 loc = f"table#{ti} row='Total' (closure-checked)"
                 return [_fact(mt, k, v, 1000, loc, raw) for k, v in
                         [("aum_begin", b), ("net_flows", nf), ("aum_other_change", dist), ("market", mk), ("aum_end", e)]]
+            if label.strip() == "Total" and len(nums) == 6:          # 2023-2025 layout: begin, inflows, outflows, market, other, end
+                b, inf, outf, mk, oth, e = nums
+                nf = inf + outf
+                if abs(b + nf + mk + oth - e) > TOL_BN:
+                    continue
+                loc = f"table#{ti} row='Total' (closure-checked)"
+                return [_fact(mt, k, v, 1000, loc, raw) for k, v in
+                        [("aum_begin", b), ("net_flows", nf), ("aum_other_change", oth), ("market", mk), ("aum_end", e)]]
             if label.strip() == "Total" and len(nums) >= 7:
                 b, _, _, nf, dist, mk, e = nums[:7]
                 if abs(b + nf + dist + mk - e) > TOL_BN:
@@ -146,7 +154,7 @@ def run_jpm(client: EdgarClient, m: pd.DataFrame) -> pd.DataFrame:
         sp = soup(client.get(r.url))
         mt = meta("JPM", "AWM", r.reportDate, r.url, r.accessionNumber, r.form, r.filingDate)
         pt = "FY" if r.form == "10-K" else "Q"
-        out += _pnl(sp, mt, ["Revenue by line of business", "Asset management fees", "Total net revenue", "Compensation expense"], JPM_LM, pt)
+        out += _pnl(sp, mt, ["Revenue by line of business", "Global Private Bank", "Asset management fees", "Total net revenue", "Compensation expense"], JPM_LM, pt)
         if r.form == "10-Q":
             out += jpm_aum(sp, mt)
         else:   # 10-K: AUM roll-forward is annual; keep FY roll for Q4 derivation

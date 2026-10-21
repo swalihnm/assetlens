@@ -154,7 +154,7 @@ Tables flagged **synthetic** carry a `synthetic = true` column.
 | synthetic | BOOLEAN |
 
 ## fact_financials
-2,225 rows
+2,284 rows
 
 | Column | Type |
 |---|---|
@@ -262,7 +262,7 @@ Tables flagged **synthetic** carry a `synthetic = true` column.
 | synthetic | BOOLEAN |
 
 ## fact_provenance
-2,225 rows
+2,284 rows
 
 | Column | Type |
 |---|---|
@@ -310,6 +310,19 @@ Tables flagged **synthetic** carry a `synthetic = true` column.
 | violation_type | VARCHAR |
 | is_violation | BOOLEAN |
 | synthetic | BOOLEAN |
+
+## llm_calls
+438 rows
+
+| Column | Type |
+|---|---|
+| ts | TIMESTAMP |
+| provider | VARCHAR |
+| model | VARCHAR |
+| latency_s | DOUBLE |
+| input_tokens | BIGINT |
+| output_tokens | BIGINT |
+| cost_usd | DOUBLE |
 
 ## mart_allocation_rank_sensitivity
 30 rows
@@ -394,7 +407,7 @@ Tables flagged **synthetic** carry a `synthetic = true` column.
 | synthetic | BOOLEAN |
 
 ## mart_fee_compression
-6 rows
+7 rows
 
 | Column | Type |
 |---|---|
