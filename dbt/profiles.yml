@@ -1,0 +1,7 @@
+assetlens:
+  target: dev
+  outputs:
+    dev:
+      type: duckdb
+      path: data/warehouse/assetlens.duckdb
+      threads: 1

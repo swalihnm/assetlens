@@ -1,0 +1,10 @@
+name: assetlens
+version: "1.0"
+profile: assetlens
+model-paths: ["models"]
+test-paths: ["tests"]
+models:
+  assetlens:
+    staging: {+materialized: view, +schema: stg}
+    intermediate: {+materialized: view, +schema: int}
+    marts: {+materialized: table, +schema: marts}

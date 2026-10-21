@@ -1,0 +1,37 @@
+version: 2
+models:
+  - name: stg_financials
+    columns:
+      - name: fact_id
+        tests: [not_null, unique]
+      - name: ticker
+        tests:
+          - not_null
+          - accepted_values: {values: ['GS', 'BLK', 'TROW', 'IVZ']}
+      - name: accession_no
+        tests: [not_null]
+      - name: method
+        tests:
+          - accepted_values: {values: ['html_table', 'derived', 'xbrl_api', 'xbrl_instance', 'llm_extract', 'manual']}
+  - name: stg_business_pnl
+    columns:
+      - name: business
+        tests:
+          - not_null
+          - relationships:
+              to: source('raw', 'dim_business')
+              field: business
+      - name: synthetic
+        tests:
+          - accepted_values: {values: [true], quote: false}
+  - name: mart_peer_benchmark_sql
+  - name: mart_profitability_sql
+    columns:
+      - name: method
+        tests:
+          - accepted_values: {values: ['revenue', 'headcount', 'abc', 'step_down', 'reciprocal']}
+  - name: mart_pnl_forecast_sql
+    columns:
+      - name: scenario
+        tests:
+          - accepted_values: {values: ['base', 'bull', 'bear', 'stress']}

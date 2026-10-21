@@ -23,6 +23,13 @@ dependencies = [
   "numpy-financial",
   "pyarrow",
   "formulas>=1.3.4",
+  "fastapi>=0.156.8",
+  "uvicorn>=0.54.0",
+  "streamlit>=1.66.0",
+  "scikit-learn>=1.9.1",
+  "ortools>=9.15.6755",
+  "mlflow>=3.17.2",
+  "plotly>=7.1.0",
 ]
 [project.optional-dependencies]
 dev = ["pytest", "hypothesis", "ruff", "mypy", "pytest-cov", "dbt-duckdb"]
@@ -37,3 +44,8 @@ pythonpath = ["src"]
 markers = ["slow: recalculates the Excel workbook (about 80 s)"]
 [tool.ruff]
 line-length = 100
+
+[dependency-groups]
+dev = [
+    "dbt-duckdb>=1.11.0",
+]

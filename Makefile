@@ -30,3 +30,9 @@ powerbi:
 deck:
 	uv run python -m assetlens.deck.build_deck
 all: ingest extract warehouse benchmark synth allocate forecast excel powerbi deck
+dbt:
+	uv run dbt build --project-dir dbt --profiles-dir dbt && uv run dbt docs generate --project-dir dbt --profiles-dir dbt
+api:
+	uv run uvicorn assetlens.api.app:app --reload
+pack:
+	uv run python -m assetlens.allocation.monthly_pack

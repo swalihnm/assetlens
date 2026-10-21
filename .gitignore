@@ -9,3 +9,7 @@ __pycache__/
 .ruff_cache/
 outputs/powerbi/*
 !outputs/powerbi/dax_spot_checks.csv
+dbt/target/
+dbt/logs/
+logs/
+mlruns/

@@ -1,0 +1,16 @@
+version: 2
+sources:
+  - name: raw
+    schema: main
+    description: "Tables written by the Python extraction / synthetic generators"
+    tables:
+      - name: fact_financials
+      - name: fact_provenance
+      - name: fact_market
+      - name: fact_business_pnl
+      - name: fact_cost_pools
+      - name: fact_allocation
+      - name: fact_forecast
+      - name: fact_headcount
+      - name: dim_business
+      - name: dim_region
