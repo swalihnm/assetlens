@@ -13,7 +13,7 @@
 | G9 | Peer Q3-2026 for TROW and IVZ | Not yet reported (late Oct) | Re-run after release |
 | G10 | MS, JPM, BEN peers | Phase 2 | Not started |
 | G11 | ICE BofA bond total-return indices before Oct-2023 | FRED now serves ~3 years only (licensing). Bond return proxy = y10/4 - 6.5 x dy (corr 0.955 with ICE over 11 overlapping quarters) | Proxy used in M5 |
-| G12 | MS Investment Management AUM roll-forward before 2024-Q1 | 2024-26 layouts parsed (6- and 7-column); 2021-23 layout not parsed; P&L parsed from 2021 | Open |
-| G13 | JPM AWM segment P&L before 2023-Q1 | 2023-26 parsed (anchored on 'Global Private Bank'); 2019-22 layout not parsed; AUM roll-forward complete 2019-26 | Open |
+| G12 | MS IM AUM roll-forward: 2021-Q1, 2023-Q2 and some Q4s missing | Three layouts parsed (2021-23 transposed, 2023-25 six-column, 2024-26 seven-column); remaining gaps from 10-K-only Q4s and one unparsed quarter | Partial |
+| G13 | JPM AWM segment P&L for Q4 2019-22 | 10-K layouts not parsed; Q1-Q3 2019-22 and all 2023-26 parsed; fee line relabelled in 2023 (definitional break) | Partial |
 | G14 | BEN AUM roll-forward before 2020-Q3; operating income in two fiscal-Q4 releases | Older/Q4 release layouts differ | Open |
 | G15 | MS Wealth Management client assets / net new assets | Not parsed (WM P&L only, ticker MSWM) | Open |

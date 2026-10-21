@@ -25,7 +25,7 @@ def _fact(mt: dict, metric: str, value: float, scale: float, locator: str, raw: 
             "locator": locator, "raw_text": raw, "method": "html_table", "confidence": 1.0, "reviewed": True}
 
 
-def _pnl(sp, mt, anchors, labelmap: dict[str, str], ptype: str) -> list[dict]:
+def _pnl(sp, mt, anchors, labelmap: dict[str, str], ptype: str, accept=None) -> list[dict]:
     out = []
     for ti, t in find_tables(sp, *anchors):
         got = {}
@@ -33,7 +33,7 @@ def _pnl(sp, mt, anchors, labelmap: dict[str, str], ptype: str) -> list[dict]:
             for rx, metric in labelmap.items():
                 if metric not in got and re.search(rx, label) and nums:
                     got[metric] = _fact(mt, metric, nums[0], 1, f"table#{ti} row='{norm(label)}' col=0", raw, ptype)
-        if len(got) >= len(labelmap) - 1:
+        if len(got) >= len(labelmap) - 1 and (accept is None or accept(got)):
             return list(got.values())
     return out
 
@@ -86,6 +86,32 @@ def ms_aum(sp, mt, begin_date: str) -> list[dict]:
     return []
 
 
+def ms_aum_transposed(sp, mt, begin_date: str) -> list[dict]:
+    """2021-23 layout: products are columns, rows are [begin date, Inflows, Outflows, Market Impact, Other, end date]; last column = Total."""
+    for ti, t in enumerate(sp.find_all("table")):
+        low = norm(t.get_text(" ")).lower()
+        if not all(k in low for k in ("inflows", "outflows", "market impact", "fixed income", "liquidity")):
+            continue
+        rr = rows(t)
+        lab = {norm(l): n for l, n, _ in rr}
+        dates = [(l, n) for l, n, _ in rr if re.fullmatch(r"\w+ \d{1,2}, \d{4}", norm(l))]
+        if len(dates) != 2 or pd.Timestamp(dates[0][0]) != pd.Timestamp(begin_date):
+            continue
+        try:
+            b, e = dates[0][1][-1], dates[1][1][-1]
+            inf, outf, mk = lab["Inflows"][-1], lab["Outflows"][-1], lab["Market Impact"][-1]
+            oth = lab.get("Other", [0.0])[-1]
+        except (KeyError, IndexError):
+            continue
+        nf = inf + outf
+        if abs(b + nf + mk + oth - e) > TOL_BN:
+            continue
+        loc = f"table#{ti} Total column (transposed layout, closure-checked)"
+        return [_fact(mt, k, v, 1000, loc, "") for k, v in
+                [("aum_begin", b), ("net_flows", nf), ("aum_other_change", oth), ("market", mk), ("aum_end", e)]]
+    return []
+
+
 def run_ms(client: EdgarClient, m: pd.DataFrame) -> pd.DataFrame:
     out = []
     for r in m[(m.ticker == "MS") & m.form.isin(["10-Q", "10-K"])].itertuples():
@@ -101,11 +127,12 @@ def run_ms(client: EdgarClient, m: pd.DataFrame) -> pd.DataFrame:
         mt = meta("MS", "IM", r.reportDate, r.url, r.accessionNumber, r.form, r.filingDate)
         pe = pd.Timestamp(r.reportDate)
         begin = (pe - pd.offsets.YearEnd(1)).strftime("%Y-%m-%d") if annual else (pe - pd.offsets.QuarterEnd(1)).strftime("%Y-%m-%d")
-        out += [{**x, "period_type": pt} for x in ms_aum(sp, mt, begin)]
+        got = ms_aum(sp, mt, begin) or ms_aum_transposed(sp, mt, begin)
+        out += [{**x, "period_type": pt} for x in got]
     return pd.DataFrame(out)
 
 
-JPM_LM = {r"^Asset management fees$": "fees_asset_management", r"^Total net revenue$": "net_revenues", r"^Compensation expense$": "comp_total",
+JPM_LM = {r"^Asset management(, administration and commissions| fees)$": "fees_asset_management", r"^Total net revenue$": "net_revenues", r"^Compensation expense$": "comp_total",
           r"^Total noninterest expense$": "opex", r"^Income before income tax expense$": "pretax_income"}
 
 
@@ -154,7 +181,11 @@ def run_jpm(client: EdgarClient, m: pd.DataFrame) -> pd.DataFrame:
         sp = soup(client.get(r.url))
         mt = meta("JPM", "AWM", r.reportDate, r.url, r.accessionNumber, r.form, r.filingDate)
         pt = "FY" if r.form == "10-K" else "Q"
-        out += _pnl(sp, mt, ["Revenue by line of business", "Global Private Bank", "Asset management fees", "Total net revenue", "Compensation expense"], JPM_LM, pt)
+        got = _pnl(sp, mt, ["Revenue by line of business", "Global Private Bank", "Asset management fees", "Total net revenue", "Compensation expense"], JPM_LM, pt)
+        if not got:   # 2019-22 layout: 'Asset management, administration and commissions'; AWM revenue is < $10bn (guards vs other segments)
+            got = _pnl(sp, mt, ["Asset management, administration and commissions", "Total net revenue", "Compensation expense", "Income before income tax"], JPM_LM, pt,
+                       accept=lambda g: g.get("net_revenues", {"value": 1e9})["value"] < 10_000)
+        out += got
         if r.form == "10-Q":
             out += jpm_aum(sp, mt)
         else:   # 10-K: AUM roll-forward is annual; keep FY roll for Q4 derivation

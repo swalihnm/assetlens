@@ -31,7 +31,7 @@ _Last updated: 2026-10-21. Spec: AssetLens_Project_Spec.md. Phase 1 target = F&S
 
 ## Still to do
 1. Claude comparison for the AI layer (needs ANTHROPIC_API_KEY)
-2. Older-layout parsers: MS IM AUM 2021-23, JPM AWM P&L 2019-22, BEN pre-2020, TROW 2020-Q3 / 2021-Q4 (DATA_GAPS G6, G12-G15)
+2. Remaining parser gaps (low value): BEN AUM pre-2020-Q3, TROW 2020-Q3 / 2021-Q4, JPM Q4 2019-22 P&L, a few MS quarters (DATA_GAPS G6, G12-G14)
 3. Build the .pbix; render deck PDF (install LibreOffice) and cross-check the workbook with it
 4. Q3-2026 GS 10-Q (about 30 Oct): rerun extract + warehouse
 
