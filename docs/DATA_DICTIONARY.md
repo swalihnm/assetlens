@@ -117,6 +117,20 @@ Tables flagged **synthetic** carry a `synthetic = true` column.
 | business | VARCHAR |
 | synthetic | BOOLEAN |
 
+## fact_comp - **synthetic**
+3,066 rows
+
+| Column | Type |
+|---|---|
+| advisor_id | VARCHAR |
+| year | BIGINT |
+| revenue | DOUBLE |
+| nna | DOUBLE |
+| tenure | DOUBLE |
+| region | VARCHAR |
+| comp_musd | DOUBLE |
+| synthetic | BOOLEAN |
+
 ## fact_cost_pools - **synthetic**
 90 rows
 
@@ -231,6 +245,22 @@ Tables flagged **synthetic** carry a `synthetic = true` column.
 | DEXUSEU_avg | DOUBLE |
 | CPIAUCSL_avg | DOUBLE |
 
+## fact_pipeline - **synthetic**
+18 rows
+
+| Column | Type |
+|---|---|
+| period_end | TIMESTAMP |
+| leads | BIGINT |
+| meetings | BIGINT |
+| proposals | BIGINT |
+| wins | BIGINT |
+| nna_musd | DOUBLE |
+| lead_to_meeting | DOUBLE |
+| meeting_to_proposal | DOUBLE |
+| proposal_to_win | DOUBLE |
+| synthetic | BOOLEAN |
+
 ## fact_provenance
 1,550 rows
 
@@ -266,7 +296,7 @@ Tables flagged **synthetic** carry a `synthetic = true` column.
 | synthetic | BOOLEAN |
 
 ## fact_te - **synthetic**
-200,613 rows
+201,179 rows
 
 | Column | Type |
 |---|---|
@@ -309,6 +339,30 @@ Tables flagged **synthetic** carry a `synthetic = true` column.
 | organic_pct_of_begin | DOUBLE |
 | market_pct_of_begin | DOUBLE |
 
+## mart_backtest_errors
+130 rows
+
+| Column | Type |
+|---|---|
+| origin | TIMESTAMP |
+| horizon | BIGINT |
+| model | VARCHAR |
+| actual | DOUBLE |
+| forecast | DOUBLE |
+| error | DOUBLE |
+| ape | DOUBLE |
+
+## mart_backtest_summary
+20 rows
+
+| Column | Type |
+|---|---|
+| model | VARCHAR |
+| horizon | BIGINT |
+| mape | DOUBLE |
+| bias | DOUBLE |
+| n | BIGINT |
+
 ## mart_budget_variance
 4 rows
 
@@ -328,6 +382,17 @@ Tables flagged **synthetic** carry a `synthetic = true` column.
 | flag | BOOLEAN |
 | owner_commentary | VARCHAR |
 
+## mart_cohort_ramp - **synthetic**
+157 rows
+
+| Column | Type |
+|---|---|
+| cohort | INTEGER |
+| tenure_bucket | DOUBLE |
+| revenue_per_advisor_q | DOUBLE |
+| advisors | BIGINT |
+| synthetic | BOOLEAN |
+
 ## mart_fee_compression
 4 rows
 
@@ -342,6 +407,70 @@ Tables flagged **synthetic** carry a `synthetic = true` column.
 | ci_high | DOUBLE |
 | pct_per_year | DOUBLE |
 | significant | BOOLEAN |
+
+## mart_market_beta_rolling
+63 rows
+
+| Column | Type |
+|---|---|
+| ticker | VARCHAR |
+| period_end | TIMESTAMP |
+| beta_equity | DOUBLE |
+| beta_bond | DOUBLE |
+
+## mart_market_sensitivity
+4 rows
+
+| Column | Type |
+|---|---|
+| ticker | VARCHAR |
+| n | BIGINT |
+| beta_equity | DOUBLE |
+| eq_ci_low | DOUBLE |
+| eq_ci_high | DOUBLE |
+| beta_bond | DOUBLE |
+| bd_ci_low | DOUBLE |
+| bd_ci_high | DOUBLE |
+| alpha_q | DOUBLE |
+| r2 | DOUBLE |
+| dw | DOUBLE |
+| note | VARCHAR |
+
+## mart_montecarlo_fan
+24 rows
+
+| Column | Type |
+|---|---|
+| t | BIGINT |
+| metric | VARCHAR |
+| p10 | DOUBLE |
+| p50 | DOUBLE |
+| p90 | DOUBLE |
+
+## mart_montecarlo_prob
+1 rows
+
+| Column | Type |
+|---|---|
+| margin_below_threshold_q8 | DOUBLE |
+| margin_below_threshold_any | DOUBLE |
+| threshold | DOUBLE |
+| n | BIGINT |
+| hist_quarters | BIGINT |
+| pretax_8q_p10 | DOUBLE |
+| pretax_8q_p50 | DOUBLE |
+| pretax_8q_p90 | DOUBLE |
+
+## mart_nna_forecast - **synthetic**
+4 rows
+
+| Column | Type |
+|---|---|
+| quarter | VARCHAR |
+| forecast | DOUBLE |
+| p10 | DOUBLE |
+| p90 | DOUBLE |
+| synthetic | BOOLEAN |
 
 ## mart_peer_benchmark
 115 rows
@@ -397,6 +526,24 @@ Tables flagged **synthetic** carry a `synthetic = true` column.
 | fully_allocated_pretax | DOUBLE |
 | contribution_margin_pct | DOUBLE |
 | fully_allocated_margin | DOUBLE |
+| synthetic | BOOLEAN |
+
+## mart_sales_productivity - **synthetic**
+72 rows
+
+| Column | Type |
+|---|---|
+| period_end | TIMESTAMP |
+| region | VARCHAR |
+| advisors | BIGINT |
+| revenue | DOUBLE |
+| nna | DOUBLE |
+| aum | DOUBLE |
+| clients | BIGINT |
+| quota_attainment | DOUBLE |
+| revenue_per_advisor | DOUBLE |
+| aum_per_advisor | DOUBLE |
+| wallet_proxy_revenue_bps_of_aum | DOUBLE |
 | synthetic | BOOLEAN |
 
 ## mart_top_down_vs_bottom_up - **synthetic**

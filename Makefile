@@ -36,3 +36,11 @@ api:
 	uv run uvicorn assetlens.api.app:app --reload
 pack:
 	uv run python -m assetlens.allocation.monthly_pack
+market:
+	uv run python -m assetlens.market.sensitivity
+montecarlo:
+	uv run python -m assetlens.forecast.montecarlo && uv run python -m assetlens.forecast.backtest
+analytics:
+	uv run python -m assetlens.sales.analytics && uv run python -m assetlens.comp.analysis
+app:
+	uv run streamlit run app/streamlit_app.py

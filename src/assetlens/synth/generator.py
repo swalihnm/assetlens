@@ -170,10 +170,10 @@ def advisors(pnl: pd.DataFrame, rng: np.random.Generator) -> tuple[pd.DataFrame,
         w = (dim.book_initial_musd * (0.35 + 0.65 * ramp) * rng.lognormal(0, A["fee_bps_noise"], n)) * active
         pwm = pnl[(pnl.period_end == pe) & (pnl.business == "PWM")].iloc[0]
         rev = _norm(w.values, pwm.mgmt_fees)                          # calibrated to PWM mgmt fees
-        flows = rng.normal(0.012, 0.02, n) * dim.book_initial_musd.values * 1000 * active.values  # $m x? -> $k
+        aum_k = rev * 4 / A["fee_yield"] * rng.lognormal(0, 0.10, n)       # book consistent with an ~85 bps fee yield
+        flows = rng.normal(0.012, 0.02, n) * aum_k * active.values          # NNA ~1.2% of book per quarter, noisy
         for j in np.flatnonzero(active.values):
-            rows.append((pe, dim.advisor_id[j], rev[j], flows[j] / 1000, dim.book_initial_musd[j] * (0.35 + 0.65 * ramp[j]),
-                         int(rng.integers(40, 160)), tenure[j]))
+            rows.append((pe, dim.advisor_id[j], rev[j], flows[j], aum_k[j], int(rng.integers(40, 160)), tenure[j]))
     fa = pd.DataFrame(rows, columns=["period_end", "advisor_id", "revenue_musd", "nna_musd", "aum_musd",
                                      "clients", "tenure_years"])
     fa["synthetic"] = True
@@ -253,6 +253,9 @@ def travel_expenses(rng: np.random.Generator, gl_vendors: pd.DataFrame) -> pd.Da
     n = T["n_claims"]
     emp = rng.integers(0, 7000, n)
     date = pd.Timestamp("2025-07-01") + pd.to_timedelta(rng.integers(0, 365, n), unit="D")
+    wk = date.weekday >= 5                                           # business travel is mostly on weekdays:
+    shift = np.where(rng.random(n) < 0.88, 1, 0) * np.where(date.weekday == 5, 2, 1)   # move 88% of weekend claims
+    date = date + pd.to_timedelta(np.where(wk, shift, 0), unit="D")
     cat = rng.choice(["Airfare", "Hotel", "Meals", "Ground transport", "Client entertainment"], n,
                      p=[0.28, 0.27, 0.22, 0.13, 0.10])
     limit = pd.Series(cat).map({"Airfare": 3500, "Hotel": 450, "Meals": 120, "Ground transport": 150,
@@ -273,6 +276,15 @@ def travel_expenses(rng: np.random.Generator, gl_vendors: pd.DataFrame) -> pd.Da
         elif t == "weekend_holiday":
             d = df.at[i, "claim_date"]
             df.at[i, "claim_date"] = d + pd.Timedelta(days=(5 - d.weekday()) % 7 or 6)
+    split_rows = []
+    for i, t in zip(idx, types):
+        if t == "split_transaction":                                 # two sub-limit claims, same day, sum above the limit
+            df.at[i, "amount_usd"] = round(limit[i] * 0.62, 2)
+            twin = df.loc[i].copy()
+            twin["claim_id"] = n + 100_000 + len(split_rows)
+            split_rows.append(twin)
+    if split_rows:
+        df = pd.concat([df, pd.DataFrame(split_rows)], ignore_index=True)
     dup_idx = [i for i, t in zip(idx, types) if t == "duplicate"]
     dups = df.loc[dup_idx].copy()
     dups["claim_id"] = np.arange(n + 1, n + 1 + len(dups))

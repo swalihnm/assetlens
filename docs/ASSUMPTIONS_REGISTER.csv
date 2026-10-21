@@ -53,7 +53,7 @@ A051,Synthetic: investments_split,"{'ALT': 0.85, 'PWM': 0.15}",,synthetic genera
 A052,Synthetic: pools,"{'TECH': 0.13, 'OPS': 0.08, 'RISK': 0.05, 'FHL': 0.06, 'PREM': 0.03}",,synthetic generator (config/synthetic.yaml),Calibrated to public segment totals,Abdulla Swalih NM,
 A053,Synthetic: regions,"{'AMER': 0.62, 'EMEA': 0.22, 'APAC': 0.14, 'GCC': 0.02}",,synthetic generator (config/synthetic.yaml),Calibrated to public segment totals,Abdulla Swalih NM,
 A054,Synthetic: headcount,"{'start_total': 9500, 'annual_growth': 0.02, 'support_share': 0.3}",,synthetic generator (config/synthetic.yaml),Calibrated to public segment totals,Abdulla Swalih NM,
-A055,Synthetic: advisors,"{'n': 800, 'book_median_musd': 180, 'book_sigma': 0.9, 'annual_attrition': 0.08, 'fee_bps_noise': 0.1}",,synthetic generator (config/synthetic.yaml),Calibrated to public segment totals,Abdulla Swalih NM,
+A055,Synthetic: advisors,"{'fee_yield': 0.0085, 'n': 800, 'book_median_musd': 180, 'book_sigma': 0.9, 'annual_attrition': 0.08, 'fee_bps_noise': 0.1}",,synthetic generator (config/synthetic.yaml),Calibrated to public segment totals,Abdulla Swalih NM,
 A056,Synthetic: te,"{'n_claims': 200000, 'violation_rate': 0.015}",,synthetic generator (config/synthetic.yaml),Calibrated to public segment totals,Abdulla Swalih NM,
 A057,Synthetic: gl,{'target_rows': 2600000},,synthetic generator (config/synthetic.yaml),Calibrated to public segment totals,Abdulla Swalih NM,
 A058,Synthetic: savings,{'n_initiatives': 40},,synthetic generator (config/synthetic.yaml),Calibrated to public segment totals,Abdulla Swalih NM,
