@@ -17,27 +17,12 @@ from pathlib import Path
 import httpx
 from dotenv import load_dotenv
 
+from assetlens.pipeline import ORDER
+from assetlens.pipeline import STEPS as PIPELINE
+
 ROOT = Path(__file__).resolve().parents[2]
 STATE = ROOT / "data" / "interim" / "refresh_state.json"
-STEPS = [
-    ["-m", "assetlens.ingest.run", "2"],
-    ["-m", "assetlens.extract.run_gs"],
-    ["-m", "assetlens.warehouse.build"],
-    ["-m", "assetlens.benchmark.metrics"],
-    ["-m", "assetlens.market.sensitivity"],
-    ["-m", "assetlens.synth.generator"],
-    ["-m", "assetlens.allocation.methods"],
-    ["-m", "assetlens.forecast.engine"],
-    ["-m", "assetlens.forecast.budget"],
-    ["-m", "assetlens.forecast.montecarlo"],
-    ["-m", "assetlens.forecast.backtest"],
-    ["-m", "assetlens.sales.analytics"],
-    ["-m", "assetlens.excel.build_model"],
-    ["-m", "assetlens.powerbi.export_star_schema"],
-    ["-m", "assetlens.warehouse.docs_gen"],
-    ["-m", "assetlens.deck.build_deck"],
-    ["-m", "assetlens.deck.render_pdf"],
-]
+STEPS = [cmd for name in ORDER for cmd in PIPELINE[name]]
 
 
 def latest_gs_10q() -> tuple[str, str] | None:

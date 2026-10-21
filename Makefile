@@ -1,4 +1,4 @@
-.PHONY: setup test test-all lint ingest extract warehouse benchmark synth allocate forecast excel parity powerbi deck all
+.PHONY: docs refresh dbt api pack market montecarlo analytics app setup test test-all lint ingest extract warehouse benchmark synth allocate forecast excel parity powerbi deck all
 setup:
 	uv sync --all-extras
 test:
@@ -8,9 +8,9 @@ test-all:
 lint:
 	uv run ruff check src tests
 ingest:
-	uv run python -m assetlens.ingest.run
+	uv run python -m assetlens.ingest.run 2
 extract:
-	uv run python -m assetlens.extract.run_gs && uv run python -m assetlens.extract.run_peers
+	uv run python -m assetlens.extract.run_all
 warehouse:
 	uv run python -m assetlens.warehouse.build
 benchmark:
@@ -29,7 +29,8 @@ powerbi:
 	uv run python -m assetlens.powerbi.export_star_schema
 deck:
 	uv run python -m assetlens.deck.build_deck && uv run python -m assetlens.deck.render_pdf
-all: ingest extract warehouse benchmark synth allocate forecast excel powerbi deck
+all:
+	uv run python -m assetlens.pipeline all
 dbt:
 	uv run dbt build --project-dir dbt --profiles-dir dbt && uv run dbt docs generate --project-dir dbt --profiles-dir dbt
 api:
@@ -46,3 +47,5 @@ app:
 	uv run streamlit run app/streamlit_app.py
 refresh:
 	uv run python -m assetlens.refresh
+docs:
+	uv run python -m assetlens.warehouse.docs_gen
