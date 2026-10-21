@@ -23,14 +23,14 @@ _Last updated: 2026-10-21. Spec: AssetLens_Project_Spec.md. Phase 1 target = F&S
 | M14 Excel | Done | live formulas, checks all 0, Python parity ~1e-15 |
 | M15 Power BI assets | Done (assets) | **.pbix not built; DAX never executed** |
 | M16 Board deck | Done (PPTX) | numbers from warehouse, test passes. **No PDF** (no LibreOffice) |
-| M17 AI layer | Done offline | text-to-SQL baseline 82.6% (hard 0/12), adversarial 17/17 rejected, RAG hit@5 0.90, guardrail 250/250, extraction + review queue. **No live LLM run (no API key)** |
+| M17 AI layer | Done offline | text-to-SQL baseline 82.6% (hard 0/12), adversarial 17/17 rejected, RAG hit@5 0.90, guardrail 250/250, extraction + review queue. **Live SQL eval via Ollama cloud gemma4:31b: 62.3% (hard 9/12); RAG answers / extraction not run live; Claude not evaluated** |
 | M18 API / Streamlit / Docker / docs | Done | FastAPI (5 endpoints), Streamlit 8 pages (smoke-tested), Dockerfile + CI (unrun) |
 
 ## Tests
 `make test` - 54 pass (fast). `make test-all` adds the Excel parity test (~80 s) and the Streamlit all-pages smoke test.
 
 ## Still to do
-1. Live-LLM evaluation of text-to-SQL / RAG answers / extraction (needs an API key)
+1. Live-LLM runs of RAG answers and extraction; Claude comparison (needs ANTHROPIC_API_KEY); prompt improvement for SQL lookups
 2. Parse older MS IM AUM layouts and JPM AWM P&L before 2024 (see DATA_GAPS G12-G15); TROW 2020-Q3 / 2021-Q4
 3. Build the .pbix; render deck PDF (install LibreOffice) and cross-check the workbook with it
 4. Q3-2026 GS 10-Q (about 30 Oct): rerun extract + warehouse

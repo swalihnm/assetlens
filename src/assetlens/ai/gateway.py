@@ -13,10 +13,12 @@ from dataclasses import dataclass, field
 
 import duckdb
 import httpx
+from dotenv import load_dotenv
 
 from assetlens.warehouse.build import DB
 
 # USD per million tokens (input, output) - placeholders for cost logging; update from provider pricing pages
+load_dotenv()
 PRICES = {"anthropic": (3.0, 15.0), "openai": (2.5, 10.0), "ollama": (0.0, 0.0), "mock": (0.0, 0.0)}
 
 
@@ -54,9 +56,13 @@ class Gateway:
                                  "messages": [{"role": "system", "content": system}, {"role": "user", "content": prompt}]}).json()
             text, tin, tout = r["choices"][0]["message"]["content"], r["usage"]["prompt_tokens"], r["usage"]["completion_tokens"]
         elif self.provider == "ollama":
-            r = httpx.post(os.environ.get("OLLAMA_URL", "http://localhost:11434") + "/api/chat", timeout=300,
+            key = os.environ.get("OLLAMA_API_KEY")
+            base = os.environ.get("OLLAMA_URL", "https://ollama.com" if key else "http://localhost:11434")
+            r = httpx.post(base + "/api/chat", timeout=300, headers={"Authorization": f"Bearer {key}"} if key else {},
                            json={"model": self.model or "llama3.1", "stream": False, "options": {"temperature": temperature},
                                  "messages": [{"role": "system", "content": system}, {"role": "user", "content": prompt}]}).json()
+            if "message" not in r:
+                raise RuntimeError(f"Ollama error: {r.get('error', r)}")
             text, tin, tout = r["message"]["content"], r.get("prompt_eval_count", 0), r.get("eval_count", 0)
         elif self.provider == "mock":
             text = self.mock_fn(system, prompt) if self.mock_fn else "{}"
