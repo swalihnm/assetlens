@@ -73,6 +73,8 @@ def test_phase2_peers_present_and_chained():
                     "and metric in ('aum_begin','aum_end')").df()
     con.close()
     for t, g in f.groupby("ticker"):
-        p = g.pivot_table(index="period_end", columns="metric", values="value").dropna().sort_index()
-        gap = (p.aum_begin - p.aum_end.shift(1)).dropna().abs()
-        assert (gap < 0.001 * p.aum_end.iloc[1:].values).all()
+        p = g.pivot_table(index="period_end", columns="metric", values="value").sort_index()
+        p.index = pd.PeriodIndex(pd.to_datetime(p.index), freq="Q")
+        p = p.reindex(pd.period_range(p.index.min(), p.index.max(), freq="Q"))
+        gap = (p.aum_begin - p.aum_end.shift(1)).dropna().abs()          # only consecutive quarters with both values
+        assert len(gap) >= 10 and (gap < 0.001 * p.aum_end.shift(1).loc[gap.index]).all()
