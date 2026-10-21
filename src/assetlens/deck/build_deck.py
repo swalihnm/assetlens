@@ -72,6 +72,10 @@ def numbers() -> dict[str, float | str]:
     n["gcc_npv"], n["gcc_npv_explicit"], n["gcc_irr"] = g["npv"], g["npv_explicit"], g["irr"] * 100
     n["gcc_payback"], n["gcc_peak"] = g["payback_years"], g["peak_funding"]
     n["gcc_tv_share"] = (1 - g["npv_explicit"] / g["npv"]) * 100
+    from assetlens.growth import simulation as GS
+    mc = GS.simulate(1000, threshold=350, delay=1)
+    n["gcc_mc_mean"], n["gcc_mc_p10"], n["gcc_mc_p90"] = mc["full"]["mean"], mc["full"]["p10"], mc["full"]["p90"]
+    n["gcc_mc_loss"], n["gcc_option"], n["gcc_pass"] = mc["full"]["prob_loss"] * 100, mc["option_value"], mc["pass_rate"] * 100
     sv = duckdb.connect(str(DB), read_only=True).execute(
         "select sum(target_savings_musd), sum(realised_to_date_musd), count(*) from fact_savings").fetchone()
     n["sav_target"], n["sav_real"], n["sav_n"] = sv
@@ -115,7 +119,7 @@ def build() -> Path:
         f"Allocation matters (synthetic split): Liquidity Solutions shows {f1('LIQ_margin_rev')}% margin on a revenue basis but "
         f"{f1('LIQ_margin_abc')}% under activity-based costing (rank {n['LIQ_rank_rev']} to {n['LIQ_rank_abc']}); price new mandates off marginal cost, not allocation.",
         f"GCC private wealth office: illustrative NPV ${n['gcc_npv']:.0f}m, but {n['gcc_tv_share']:.0f}% comes from terminal value (explicit-period NPV ${n['gcc_npv_explicit']:.0f}m): "
-        "a staged entry is advisable."], 14, bullets=True)
+        f"Monte Carlo: mean NPV ${n['gcc_mc_mean']:.0f}m, {n['gcc_mc_loss']:.0f}% chance of loss; staging a pilot first was worth ${n['gcc_option']:.0f}m (negative: it delays a project that is positive in most paths)."], 14, bullets=True)
     # 2 competitive position
     s = _slide(prs, "Competitive position: growth and fee yield versus peers",
                "GS 10-Q/10-K AWM tables; BLK, TROW, IVZ Ex.99.1 earnings releases; warehouse mart_peer_benchmark")
@@ -153,7 +157,9 @@ def build() -> Path:
     _tb(s, 7.2, 1.3, 5.7, 5, [
         f"Base case (DIFC): NPV ${n['gcc_npv']:.0f}m, IRR {n['gcc_irr']:.0f}%, payback {n['gcc_payback']:.1f} years, peak funding ${n['gcc_peak']:.0f}m.",
         f"Terminal value is {n['gcc_tv_share']:.0f}% of NPV; the explicit seven-year NPV is ${n['gcc_npv_explicit']:.0f}m.",
-        "Recommendation: conditional go, staged entry (representative office first), gated on advisor AUM ramp at year 2.",
+        f"Monte Carlo (1,000 paths): mean NPV ${n['gcc_mc_mean']:.0f}m (P10 ${n['gcc_mc_p10']:.0f}m, P90 ${n['gcc_mc_p90']:.0f}m), {n['gcc_mc_loss']:.0f}% chance of loss.",
+        f"Staged entry (pilot, expand if AUM clears $350m at year 2; {n['gcc_pass']:.0f}% pass): option value ${n['gcc_option']:.0f}m, i.e. staging lowers expected value; use it only as risk control.",
+        "Recommendation: conditional go on the full plan, gated on validating AUM per advisor and net revenue bps; the explicit-period NPV is small so the case rests on terminal value.",
         f"Savings programme (synthetic): {int(n['sav_n'])} initiatives, ${n['sav_target']:.0f}m target, ${n['sav_real']:.0f}m realised to date."], 13, bullets=True)
     # appendix
     s = _slide(prs, "Appendix: methodology, data sources, comparability and assumptions", "docs/MODEL_DOCUMENTATION.md, docs/DECISIONS.md")

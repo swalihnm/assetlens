@@ -23,6 +23,7 @@ def ramp(tenure: float, mid: float, k: float) -> float:
 
 def run(location: str | None = None, **over) -> dict:
     c = {**CFG, **over}
+    c["locations"] = over.get("locations", CFG["locations"])
     loc = c["locations"][location or c["base_location"]]
     n = c["years"]
     yrs = np.arange(1, n + 1)
@@ -37,6 +38,7 @@ def run(location: str | None = None, **over) -> dict:
             tenure = (t - h) + 0.5
             aum_end[t] += (alive * c["mature_aum_per_advisor_musd"] * ramp(tenure, c["ramp_midpoint_years"], c["ramp_steepness"])
                            * (1 - c["client_attrition"]) ** (t - h))
+    aum_end = aum_end * np.asarray(c.get("market_index", np.ones(n)), dtype=float)   # optional market path
     aum_start = np.concatenate([[0.0], aum_end[:-1]])
     avg_aum = (aum_start + aum_end) / 2
     revenue = avg_aum * c["net_revenue_bps"] / 1e4

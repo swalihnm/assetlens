@@ -8,7 +8,7 @@
 2. **Fee yields are falling at every peer.** T4Q yield: GS 34.8 bps, T. Rowe 38.6, Invesco 23.9, BlackRock 15.6. Fitted trends (HAC 95% CI, all significant): GS -0.33, BlackRock -0.35, T. Rowe -1.23, Invesco -2.89 bps a year. Definitions differ by company; see `comparability_flags`.
 3. **Scenario range for the next eight quarters** (driver model, assumptions not forecasts): final-quarter pre-tax margin 29.3% base, 31.2% bull, 25.5% bear, 15.7% under a -25% equity stress.
 4. **Allocation method changes the answer (synthetic businesses).** Liquidity Solutions shows +36% fully allocated margin on a revenue basis and about -20% under activity-based costing (rank 2 to 6) while its contribution margin stays positive. Marginal pricing floor on a $1bn equity mandate: 15.9 bps marginal vs 25.5 bps fully allocated break-even.
-5. **GCC private wealth office (illustrative):** NPV $184m, but 93% is terminal value; the explicit seven-year NPV is $14m, so the case favours a staged entry.
+5. **GCC private wealth office (illustrative):** NPV $184m, but 93% is terminal value (explicit seven-year NPV $14m). Monte Carlo: mean NPV about $275m with a ~9% chance of loss; staging a pilot first lowers expected value by roughly $55-165m across gate/delay settings, so it works as risk control, not value creation. Back-test: the driver model's fee forecasts have 2.5-3.5% MAPE vs 4.5% for the best naive baseline (small sample).
 
 ![Fee yield](outputs/charts/fee_yield.png)
 ![Allocation methods](outputs/charts/margin_by_method.png)
@@ -36,4 +36,4 @@ SEC requests are throttled to 8/s and cached under `data/raw/`; reruns make no n
 Every public fact has provenance (accession number, table locator, raw text, method). GS segment checks pass 19/19; peer AUM roll-forwards are accepted only if they close and chain. Known gaps (GS pre-2022 AWM quarters, Q3-2026 opex, two T. Rowe quarters, BLK market split) are listed in `docs/DATA_GAPS.md`.
 
 ## Status
-Phase 1 core is built; dbt models, API/Docker, CI, Monte Carlo/backtest, compensation, sales and expense modules (Phase 2) and the AI layer (Phase 3) are not yet. See `progress.md`.
+Phase 1 plus market sensitivity, Monte Carlo, backtest, FastAPI and dbt are built; compensation, sales and expense modules, MS/JPM/BEN peers and the AI layer are not yet. See `progress.md`.
