@@ -97,14 +97,17 @@ def run(n_origins: int = 8, log_mlflow: bool = True) -> dict:
     best_naive = tot[tot.model.isin(["naive", "seasonal_naive", "drift"])].mape.min()
     for_mlflow = dict(tot.set_index("model").mape)
     if log_mlflow:
-        import mlflow
-        mlflow.set_tracking_uri("sqlite:///" + (ROOT / "data" / "mlflow.db").as_posix())
-        mlflow.set_experiment("assetlens_backtest")
-        with mlflow.start_run(run_name="gs_awm_mgmt_fees"):
-            mlflow.log_params(dict(origins=len(origins), horizons=str(HORIZONS), uncond_eq=UNCOND["eq"], uncond_bond=UNCOND["bond"]))
-            mlflow.log_metrics({f"mape_{k}": float(v) for k, v in for_mlflow.items()})
-            mlflow.log_metric("improvement_vs_best_naive_conditional",
-                              float(1 - for_mlflow["model_realised_mkt"] / best_naive))
+        try:   # experiment tracking must never break the analysis (e.g. MLflow's DB migration fails on very long Windows paths)
+            import mlflow
+            mlflow.set_tracking_uri("sqlite:///" + (ROOT / "data" / "mlflow.db").as_posix())
+            mlflow.set_experiment("assetlens_backtest")
+            with mlflow.start_run(run_name="gs_awm_mgmt_fees"):
+                mlflow.log_params(dict(origins=len(origins), horizons=str(HORIZONS), uncond_eq=UNCOND["eq"], uncond_bond=UNCOND["bond"]))
+                mlflow.log_metrics({f"mape_{k}": float(v) for k, v in for_mlflow.items()})
+                mlflow.log_metric("improvement_vs_best_naive_conditional",
+                                  float(1 - for_mlflow["model_realised_mkt"] / best_naive))
+        except Exception as exc:
+            print(f"[backtest] MLflow logging skipped: {type(exc).__name__}: {str(exc)[:120]}")
     con = duckdb.connect(str(DB))
     for name, df in [("mart_backtest_errors", d), ("mart_backtest_summary", summ)]:
         con.register("x", df)
