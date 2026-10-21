@@ -22,7 +22,7 @@ _Last updated: 2026-10-21. Spec: AssetLens_Project_Spec.md. Phase 1 target = F&S
 | M13 Expense | Done | spend cube, budget/run/exit rate, rules+IsolationForest (P@k 74%), HHI/tail, CP-SAT savings optimiser, forecast roll-up |
 | M14 Excel | Done | live formulas, checks all 0, Python parity ~1e-15 |
 | M15 Power BI assets | Done (assets) | **.pbix not built; DAX never executed** |
-| M16 Board deck | Done (PPTX) | numbers from warehouse, test passes. **No PDF** (no LibreOffice) |
+| M16 Board deck | Done | PPTX + PDF (rendered from the pptx with matplotlib, since LibreOffice needs admin rights to install; slides visually checked, no text overflow); numbers from warehouse, test passes |
 | M17 AI layer | Done | SQL agent live on Ollama gemma4:31b: 81.2% strict / 94.2% lenient (hard 9/12); adversarial 17/17 rejected; RAG hit@5 0.90, live answers 85% cited / 95% number-grounded; guardrail 250/250; extraction 3/3 live + review queue. Claude not evaluated |
 | M18 API / Streamlit / Docker / docs | Done | FastAPI (5 endpoints), Streamlit 8 pages (smoke-tested), Dockerfile + docker-compose built and run: image 1.38 GB, API and Streamlit containers serve live warehouse data (benchmarks, forecast, mandate pricing, health 200). CI workflow written, not run on GitHub |
 
@@ -32,7 +32,7 @@ _Last updated: 2026-10-21. Spec: AssetLens_Project_Spec.md. Phase 1 target = F&S
 ## Still to do
 1. Claude comparison for the AI layer (needs ANTHROPIC_API_KEY)
 2. Remaining parser gap (low value): a few Morgan Stanley IM quarters (DATA_GAPS G12). TROW, BEN and JPM gaps are closed; all peer AUM roll-forwards now chain with zero breaks
-3. Build the .pbix; render deck PDF (install LibreOffice) and cross-check the workbook with it
+3. Build the .pbix in Power BI Desktop (needs Windows Desktop)
 4. Q3-2026 GS 10-Q (about 30 Oct): rerun extract + warehouse
 
 ## Open items for you

@@ -17,3 +17,10 @@ def test_every_headline_number_matches_warehouse():
     assert not missing, missing
     assert len(re.findall("Nothing here is investment advice", text)) >= 1
     assert len(__import__("pptx").Presentation(OUT).slides) == 6
+
+
+def test_pdf_rendered_without_overflow():
+    from assetlens.deck import render_pdf
+    r = render_pdf.render()
+    assert r["slides"] == 6 and not r["overflow_in"]
+    assert render_pdf.PDF.exists() and render_pdf.PDF.stat().st_size > 50_000

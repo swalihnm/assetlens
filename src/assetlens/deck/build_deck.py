@@ -25,12 +25,16 @@ DISC = ("AssetLens is an independent educational project built from publicly ava
         "segment totals, and do not represent any company's internal figures. Nothing here is investment advice.")
 
 
+def money(x: float, unit: str = "m", dec: int = 0) -> str:
+    return f"-${abs(x):,.{dec}f}{unit}" if x < 0 else f"${x:,.{dec}f}{unit}"
+
+
 def numbers() -> dict[str, float | str]:
     con = duckdb.connect(str(DB), read_only=True)
     q = lambda s: con.execute(s).df()
     n: dict[str, float | str] = {}
     b = q("select * from mart_peer_benchmark")
-    for t in ("GS", "BLK", "TROW", "IVZ"):
+    for t in ("GS", "BLK", "TROW", "IVZ", "MS", "JPM", "BEN"):
         g = b[(b.ticker == t) & b.fee_yield_t4q_bps.notna()].sort_values("period_end").iloc[-1]
         n[f"{t}_period"] = str(g.period_end)[:10]
         n[f"{t}_aum_tn"] = g.aum_end / 1e6
@@ -106,7 +110,7 @@ def build() -> Path:
     prs.slide_width, prs.slide_height = Inches(13.333), Inches(7.5)
     f1 = lambda k: f"{n[k]:.1f}"
     # 1 executive summary
-    s = _slide(prs, "Executive summary: GS AWM leads on flow growth, margin depends on the market and on the allocation lens",
+    s = _slide(prs, "Executive summary: GS AWM leads on flow growth; margin hinges on markets and allocation",
                "SEC 10-Q/10-K and 8-K Ex.99.1 filings (GS, BLK, TROW, IVZ); AssetLens scenario model; synthetic allocation")
     _tb(s, 0.5, 1.3, 12.3, 5.2, [
         f"GS AWM AUS reached ${n['GS_aum_tn']:.2f}tn ({n['GS_period']}); trailing-four-quarter organic growth {f1('GS_organic')}% vs "
@@ -118,7 +122,7 @@ def build() -> Path:
         f"Allocation matters (synthetic split): Liquidity Solutions shows {f1('LIQ_margin_rev')}% margin on a revenue basis but "
         f"{f1('LIQ_margin_abc')}% under activity-based costing (rank {n['LIQ_rank_rev']} to {n['LIQ_rank_abc']}); price new mandates off marginal cost, not allocation.",
         f"GCC private wealth office: illustrative NPV ${n['gcc_npv']:.0f}m, but {n['gcc_tv_share']:.0f}% comes from terminal value (explicit-period NPV ${n['gcc_npv_explicit']:.0f}m): "
-        f"Monte Carlo: mean NPV ${n['gcc_mc_mean']:.0f}m, {n['gcc_mc_loss']:.0f}% chance of loss; staging a pilot first was worth ${n['gcc_option']:.0f}m (negative: it delays a project that is positive in most paths)."], 14, bullets=True)
+        f"Monte Carlo: mean NPV ${n['gcc_mc_mean']:.0f}m, {n['gcc_mc_loss']:.0f}% chance of loss; staging a pilot first was worth {money(n['gcc_option'])} (negative: it delays a project that is positive in most paths)."], 14, bullets=True)
     # 2 competitive position
     s = _slide(prs, "Competitive position: growth and fee yield versus peers",
                "GS 10-Q/10-K AWM tables; BLK, TROW, IVZ Ex.99.1 earnings releases; warehouse mart_peer_benchmark")
@@ -126,7 +130,7 @@ def build() -> Path:
     s.shapes.add_picture(str(pics["scatter"]), Inches(7.7), Inches(1.2), width=Inches(5.3))
     _tb(s, 0.5, 5.2, 12.3, 1.6, [
         f"Operating margin T4Q: GS {f1('GS_margin')}% (as of {n['GS_margin_period']}; segment pre-tax), BLK {f1('BLK_margin')}%, "
-        f"IVZ {f1('IVZ_margin')}%, TROW {f1('TROW_margin')}%.",
+        f"IVZ {f1('IVZ_margin')}%, TROW {f1('TROW_margin')}%, JPM AWM {f1('JPM_margin')}%, MS IM {f1('MS_margin')}%, BEN {f1('BEN_margin')}%.",
         "Comparability: GS = AWM segment / AUS; BLK market impact is a residual; IVZ fees are gross; margins are GAAP operating (see appendix)."], 11, bullets=True)
     # 3 outlook
     s = _slide(prs, "Financial outlook and risk: scenarios for the next eight quarters",
@@ -157,7 +161,7 @@ def build() -> Path:
         f"Base case (DIFC): NPV ${n['gcc_npv']:.0f}m, IRR {n['gcc_irr']:.0f}%, payback {n['gcc_payback']:.1f} years, peak funding ${n['gcc_peak']:.0f}m.",
         f"Terminal value is {n['gcc_tv_share']:.0f}% of NPV; the explicit seven-year NPV is ${n['gcc_npv_explicit']:.0f}m.",
         f"Monte Carlo (1,000 paths): mean NPV ${n['gcc_mc_mean']:.0f}m (P10 ${n['gcc_mc_p10']:.0f}m, P90 ${n['gcc_mc_p90']:.0f}m), {n['gcc_mc_loss']:.0f}% chance of loss.",
-        f"Staged entry (pilot, expand if AUM clears $350m at year 2; {n['gcc_pass']:.0f}% pass): option value ${n['gcc_option']:.0f}m, i.e. staging lowers expected value; use it only as risk control.",
+        f"Staged entry (pilot, expand if AUM clears $350m at year 2; {n['gcc_pass']:.0f}% pass): option value {money(n['gcc_option'])}, i.e. staging lowers expected value; use it only as risk control.",
         "Recommendation: conditional go on the full plan, gated on validating AUM per advisor and net revenue bps; the explicit-period NPV is small so the case rests on terminal value.",
         f"Savings programme (synthetic): {int(n['sav_n'])} initiatives, ${n['sav_target']:.0f}m target, ${n['sav_real']:.0f}m realised to date."], 13, bullets=True)
     # appendix

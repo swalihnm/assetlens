@@ -28,7 +28,7 @@ parity:
 powerbi:
 	uv run python -m assetlens.powerbi.export_star_schema
 deck:
-	uv run python -m assetlens.deck.build_deck
+	uv run python -m assetlens.deck.build_deck && uv run python -m assetlens.deck.render_pdf
 all: ingest extract warehouse benchmark synth allocate forecast excel powerbi deck
 dbt:
 	uv run dbt build --project-dir dbt --profiles-dir dbt && uv run dbt docs generate --project-dir dbt --profiles-dir dbt

@@ -41,6 +41,19 @@ def _ax(w=7.6, h=3.9, title=""):
     return fig, ax
 
 
+def _endlabels(ax, items, gap_frac=0.05):
+    """items: (x, y, text). Place right-hand labels with a minimum vertical gap so they never overlap."""
+    lo, hi = ax.get_ylim()
+    gap = (hi - lo) * gap_frac
+    items = sorted(items, key=lambda t: t[1])
+    ys = []
+    for _, y, _ in items:
+        ys.append(max(y, ys[-1] + gap) if ys else y)
+    for (x, y, text), yy in zip(items, ys):
+        ax.annotate(text, (x, y), xytext=(x, yy), textcoords="data", fontsize=8, color=INK, va="center",
+                    arrowprops=dict(arrowstyle="-", color=GRID, lw=0.6) if abs(yy - y) > gap * 0.4 else None)
+
+
 def _save(fig, name):
     OUT.mkdir(parents=True, exist_ok=True)
     fig.text(0.01, 0.005, DISC, fontsize=5.5, color=INK2)
@@ -65,22 +78,24 @@ def make_all() -> dict[str, Path]:
     out = {}
     # 1 indexed AUM
     fig, ax = _ax(title="AUM / AUS indexed to Mar-2022 = 100")
+    ends = []
     for t, g in b[b.period_end >= "2022-03-31"].groupby("ticker"):
         g = g.dropna(subset=["aum_end"]).sort_values("period_end")
         y = g.aum_end / g.aum_end.iloc[0] * 100
         ax.plot(g.period_end, y, color=COL[t], lw=2, marker="o", ms=3)
-        ax.annotate(f"{t} {y.iloc[-1]:.0f}", (g.period_end.iloc[-1], y.iloc[-1]), xytext=(4, 0),
-                    textcoords="offset points", fontsize=8, color=INK, va="center")
-    ax.set_xlim(right=b.period_end.max() + pd.Timedelta(days=170))
+        ends.append((g.period_end.iloc[-1] + pd.Timedelta(days=12), y.iloc[-1], f"{t} {y.iloc[-1]:.0f}"))
+    ax.set_xlim(right=b.period_end.max() + pd.Timedelta(days=190))
+    _endlabels(ax, ends)
     out["aum_indexed"] = _save(fig, "aum_indexed")
     # 2 fee yield
     fig, ax = _ax(title="Fee yield, trailing four quarters (bps)")
+    ends = []
     for t, g in b.dropna(subset=["fee_yield_t4q_bps"]).groupby("ticker"):
         g = g.sort_values("period_end")
         ax.plot(g.period_end, g.fee_yield_t4q_bps, color=COL[t], lw=2, marker="o", ms=3)
-        ax.annotate(f"{t} {g.fee_yield_t4q_bps.iloc[-1]:.1f}", (g.period_end.iloc[-1], g.fee_yield_t4q_bps.iloc[-1]),
-                    xytext=(4, 0), textcoords="offset points", fontsize=8, color=INK, va="center")
-    ax.set_xlim(right=b.period_end.max() + pd.Timedelta(days=170))
+        ends.append((g.period_end.iloc[-1] + pd.Timedelta(days=12), g.fee_yield_t4q_bps.iloc[-1], f"{t} {g.fee_yield_t4q_bps.iloc[-1]:.1f}"))
+    ax.set_xlim(right=b.period_end.max() + pd.Timedelta(days=190))
+    _endlabels(ax, ends)
     out["fee_yield"] = _save(fig, "fee_yield")
     # 3 scatter margin vs organic growth (latest T4Q with both)
     last = b.dropna(subset=["op_margin_t4q", "organic_growth_t4q"]).sort_values("period_end").groupby("ticker").tail(1)

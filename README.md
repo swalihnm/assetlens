@@ -17,7 +17,7 @@
 | Artifact | Location |
 |---|---|
 | Excel model (live formulas, 13 checks, Python parity) | `outputs/excel/AssetLens_PnL_Model.xlsx` |
-| Board pack (5 slides + appendix) | `outputs/deck/AssetLens_Board_Pack.pptx` |
+| Board pack (5 slides + appendix) | `outputs/deck/AssetLens_Board_Pack.pptx` and `.pdf` |
 | Power BI assets (star schema, Power Query, DAX, RLS guide) | `outputs/powerbi/`, `powerbi/` |
 | Streamlit app (8 pages), FastAPI | `app/streamlit_app.py` (`make app`), `src/assetlens/api/app.py` (`make api`) |
 | AI layer (text-to-SQL, RAG, guardrail, extraction) | `src/assetlens/ai/`, results in `docs/modules/M17.md` |
@@ -45,4 +45,4 @@ The image installs only the core dependencies (AI, MLflow and report-building pa
 Every public fact has provenance (accession number, table locator, raw text, method). GS segment checks pass 19/19; peer AUM roll-forwards are accepted only if they close and chain. Known gaps (GS pre-2022 AWM quarters, Q3-2026 opex, two T. Rowe quarters, BLK market split) are listed in `docs/DATA_GAPS.md`.
 
 ## Status
-All 18 modules are built. Not done or not verified: Claude evaluation (SQL agent on Ollama gemma4:31b scores 81.2% strict / 94.2% lenient execution accuracy, 9/12 on hard questions; details in `docs/modules/M17.md`), the Power BI `.pbix` and DAX execution, a PDF of the deck, and some older-filing parsers for MS/JPM/BEN (see `docs/DATA_GAPS.md`). See `progress.md`.
+All 18 modules are built. Not done or not verified: Claude evaluation (SQL agent on Ollama gemma4:31b scores 81.2% strict / 94.2% lenient execution accuracy, 9/12 on hard questions; details in `docs/modules/M17.md`), the Power BI `.pbix` and DAX execution, some older-filing parsers for MS/JPM/BEN (see `docs/DATA_GAPS.md`). See `progress.md`.
