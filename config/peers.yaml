@@ -1,0 +1,10 @@
+# CIKs verified against company_tickers.json / submissions JSON (see docs/DECISIONS.md)
+peers:
+  GS:   {name: Goldman Sachs, ciks: ["0000886982"], unit: AWM, metric: AUS, fye: "12-31", phase: 1}
+  BLK:  {name: BlackRock, unit: Company, metric: AUM, fye: "12-31", phase: 1,
+         ciks: ["0001364742", "0002012383"], stitch_date: "2024-10-01"}
+  TROW: {name: T. Rowe Price, ciks: ["0001113169"], unit: Company, metric: AUM, fye: "12-31", phase: 1}
+  IVZ:  {name: Invesco, ciks: ["0000914208"], unit: Company, metric: AUM, fye: "12-31", phase: 1}
+  MS:   {name: Morgan Stanley, ciks: ["0000895421"], unit: IM, metric: AUM, fye: "12-31", phase: 2}
+  JPM:  {name: JPMorgan Chase, ciks: ["0000019617"], unit: AWM, metric: AUM, fye: "12-31", phase: 2}
+  BEN:  {name: Franklin Resources, ciks: ["0000038777"], unit: Company, metric: AUM, fye: "09-30", phase: 2}

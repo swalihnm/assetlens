@@ -1,0 +1,22 @@
+[project]
+name = "assetlens"
+version = "0.1.0"
+description = "Asset manager benchmarking, profitability and FP&A platform"
+requires-python = ">=3.11"
+dependencies = [
+  "httpx", "tenacity", "beautifulsoup4", "lxml", "pandas", "numpy", "scipy",
+  "statsmodels", "pydantic>=2", "pandera", "duckdb", "pyyaml", "python-dotenv",
+  "openpyxl", "python-pptx", "matplotlib", "numpy-financial", "pyarrow",
+]
+[project.optional-dependencies]
+dev = ["pytest", "hypothesis", "ruff", "mypy", "pytest-cov", "dbt-duckdb"]
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+[tool.hatch.build.targets.wheel]
+packages = ["src/assetlens"]
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+[tool.ruff]
+line-length = 100

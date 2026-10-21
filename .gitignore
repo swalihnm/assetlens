@@ -1,0 +1,9 @@
+data/raw/
+data/interim/
+data/warehouse/
+.venv/
+__pycache__/
+.env
+*.pyc
+.pytest_cache/
+.ruff_cache/
