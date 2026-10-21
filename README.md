@@ -34,6 +34,13 @@ make test                   # fast tests;  make test-all adds the Excel parity t
 ```
 SEC requests are throttled to 8/s and cached under `data/raw/`; reruns make no network calls for cached items.
 
+## Docker
+```
+make all                    # build the warehouse on the host first (data/ is mounted, not baked in)
+docker compose up --build   # API on :8000 (/docs), Streamlit on :8501
+```
+The image installs only the core dependencies (AI, MLflow and report-building packages are extras: `uv sync --all-extras` for development). Verified by building and querying both services.
+
 ## Data quality summary
 Every public fact has provenance (accession number, table locator, raw text, method). GS segment checks pass 19/19; peer AUM roll-forwards are accepted only if they close and chain. Known gaps (GS pre-2022 AWM quarters, Q3-2026 opex, two T. Rowe quarters, BLK market split) are listed in `docs/DATA_GAPS.md`.
 

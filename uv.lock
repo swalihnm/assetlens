@@ -316,21 +316,16 @@ name = "assetlens"
 version = "0.1.0"
 source = { editable = "." }
 dependencies = [
-    { name = "anthropic" },
     { name = "beautifulsoup4" },
     { name = "duckdb" },
     { name = "fastapi" },
-    { name = "formulas" },
     { name = "httpx" },
-    { name = "langgraph" },
     { name = "lxml" },
     { name = "matplotlib" },
-    { name = "mlflow" },
     { name = "numpy", version = "2.4.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.12'" },
     { name = "numpy", version = "2.5.4", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12'" },
     { name = "numpy-financial", version = "1.0.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.13'" },
     { name = "numpy-financial", version = "1.1.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.13'" },
-    { name = "openpyxl" },
     { name = "ortools" },
     { name = "pandas" },
     { name = "pandera" },
@@ -338,13 +333,10 @@ dependencies = [
     { name = "pyarrow" },
     { name = "pydantic" },
     { name = "python-dotenv" },
-    { name = "python-pptx" },
     { name = "pyyaml" },
-    { name = "rank-bm25" },
     { name = "scikit-learn" },
     { name = "scipy", version = "1.17.1", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.12'" },
     { name = "scipy", version = "1.18.1", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12'" },
-    { name = "sqlglot" },
     { name = "statsmodels" },
     { name = "streamlit" },
     { name = "tenacity" },
@@ -352,6 +344,12 @@ dependencies = [
 ]
 
 [package.optional-dependencies]
+ai = [
+    { name = "anthropic" },
+    { name = "langgraph" },
+    { name = "rank-bm25" },
+    { name = "sqlglot" },
+]
 dev = [
     { name = "dbt-duckdb" },
     { name = "hypothesis" },
@@ -359,6 +357,14 @@ dev = [
     { name = "pytest" },
     { name = "pytest-cov" },
     { name = "ruff" },
+]
+mlops = [
+    { name = "mlflow" },
+]
+reports = [
+    { name = "formulas" },
+    { name = "openpyxl" },
+    { name = "python-pptx" },
 ]
 
 [package.dev-dependencies]
@@ -368,22 +374,22 @@ dev = [
 
 [package.metadata]
 requires-dist = [
-    { name = "anthropic", specifier = ">=1.17.0" },
+    { name = "anthropic", marker = "extra == 'ai'", specifier = ">=1.17.0" },
     { name = "beautifulsoup4" },
     { name = "dbt-duckdb", marker = "extra == 'dev'" },
     { name = "duckdb" },
     { name = "fastapi", specifier = ">=0.156.8" },
-    { name = "formulas", specifier = ">=1.3.4" },
+    { name = "formulas", marker = "extra == 'reports'", specifier = ">=1.3.4" },
     { name = "httpx" },
     { name = "hypothesis", marker = "extra == 'dev'" },
-    { name = "langgraph", specifier = ">=1.2.16" },
+    { name = "langgraph", marker = "extra == 'ai'", specifier = ">=1.2.16" },
     { name = "lxml" },
     { name = "matplotlib" },
-    { name = "mlflow", specifier = ">=3.17.2" },
+    { name = "mlflow", marker = "extra == 'mlops'", specifier = ">=3.17.2" },
     { name = "mypy", marker = "extra == 'dev'" },
     { name = "numpy" },
     { name = "numpy-financial" },
-    { name = "openpyxl" },
+    { name = "openpyxl", marker = "extra == 'reports'" },
     { name = "ortools", specifier = ">=9.15.6755" },
     { name = "pandas" },
     { name = "pandera" },
@@ -393,19 +399,19 @@ requires-dist = [
     { name = "pytest", marker = "extra == 'dev'" },
     { name = "pytest-cov", marker = "extra == 'dev'" },
     { name = "python-dotenv" },
-    { name = "python-pptx" },
+    { name = "python-pptx", marker = "extra == 'reports'" },
     { name = "pyyaml" },
-    { name = "rank-bm25", specifier = ">=0.2.2" },
+    { name = "rank-bm25", marker = "extra == 'ai'", specifier = ">=0.2.2" },
     { name = "ruff", marker = "extra == 'dev'" },
     { name = "scikit-learn", specifier = ">=1.9.1" },
     { name = "scipy" },
-    { name = "sqlglot", specifier = ">=30.24.0" },
+    { name = "sqlglot", marker = "extra == 'ai'", specifier = ">=30.24.0" },
     { name = "statsmodels" },
     { name = "streamlit", specifier = ">=1.66.0" },
     { name = "tenacity" },
     { name = "uvicorn", specifier = ">=0.54.0" },
 ]
-provides-extras = ["dev"]
+provides-extras = ["ai", "mlops", "reports", "dev"]
 
 [package.metadata.requires-dev]
 dev = [{ name = "dbt-duckdb", specifier = ">=1.11.0" }]

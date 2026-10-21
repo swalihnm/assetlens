@@ -17,25 +17,20 @@ dependencies = [
   "duckdb",
   "pyyaml",
   "python-dotenv",
-  "openpyxl",
-  "python-pptx",
   "matplotlib",
   "numpy-financial",
   "pyarrow",
-  "formulas>=1.3.4",
   "fastapi>=0.156.8",
   "uvicorn>=0.54.0",
   "streamlit>=1.66.0",
   "scikit-learn>=1.9.1",
   "ortools>=9.15.6755",
-  "mlflow>=3.17.2",
   "plotly>=7.1.0",
-  "langgraph>=1.2.16",
-  "sqlglot>=30.24.0",
-  "rank-bm25>=0.2.2",
-  "anthropic>=1.17.0",
 ]
 [project.optional-dependencies]
+ai = ["langgraph>=1.2.16", "sqlglot>=30.24.0", "rank-bm25>=0.2.2", "anthropic>=1.17.0"]
+mlops = ["mlflow>=3.17.2"]
+reports = ["openpyxl", "python-pptx", "formulas>=1.3.4"]
 dev = ["pytest", "hypothesis", "ruff", "mypy", "pytest-cov", "dbt-duckdb"]
 [build-system]
 requires = ["hatchling"]

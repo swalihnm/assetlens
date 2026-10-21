@@ -1,6 +1,6 @@
 .PHONY: setup test test-all lint ingest extract warehouse benchmark synth allocate forecast excel parity powerbi deck all
 setup:
-	uv sync --extra dev
+	uv sync --all-extras
 test:
 	uv run pytest -q -m "not slow"
 test-all:

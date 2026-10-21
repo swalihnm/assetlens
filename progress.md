@@ -24,7 +24,7 @@ _Last updated: 2026-10-21. Spec: AssetLens_Project_Spec.md. Phase 1 target = F&S
 | M15 Power BI assets | Done (assets) | **.pbix not built; DAX never executed** |
 | M16 Board deck | Done (PPTX) | numbers from warehouse, test passes. **No PDF** (no LibreOffice) |
 | M17 AI layer | Done | SQL agent live on Ollama gemma4:31b: 81.2% strict / 94.2% lenient (hard 9/12); adversarial 17/17 rejected; RAG hit@5 0.90, live answers 85% cited / 95% number-grounded; guardrail 250/250; extraction 3/3 live + review queue. Claude not evaluated |
-| M18 API / Streamlit / Docker / docs | Done | FastAPI (5 endpoints), Streamlit 8 pages (smoke-tested), Dockerfile + CI (unrun) |
+| M18 API / Streamlit / Docker / docs | Done | FastAPI (5 endpoints), Streamlit 8 pages (smoke-tested), Dockerfile + docker-compose built and run: image 1.38 GB, API and Streamlit containers serve live warehouse data (benchmarks, forecast, mandate pricing, health 200). CI workflow written, not run on GitHub |
 
 ## Tests
 `make test` - 54 pass; ruff clean (fast). `make test-all` adds the Excel parity test (~80 s) and the Streamlit all-pages smoke test.
