@@ -1,0 +1,49 @@
+# 8-quarter scenario paths (quarterly). ALL VALUES ARE ASSUMPTIONS, not forecasts - see docs/ASSUMPTIONS_REGISTER.csv.
+horizon_quarters: 8
+start_after: "2026-09-30"
+asset_classes:
+  alternatives: {rel_yield: 2.40, equity_beta: 0.35, carry_q: 0.010}
+  equity:       {rel_yield: 1.00, equity_beta: 1.00, carry_q: 0.000}
+  fixed_income: {rel_yield: 0.55, equity_beta: 0.00, carry_q: 0.000}   # bond return drives it
+  liquidity:    {rel_yield: 0.12, equity_beta: 0.00, carry_q: 0.000}
+fee_compression_annual: {alternatives: 0.020, equity: 0.030, fixed_income: 0.025, liquidity: 0.010}
+scenarios:
+  base:
+    equity_ret_q:  [0.020, 0.020, 0.020, 0.020, 0.020, 0.020, 0.020, 0.020]
+    bond_ret_q:    [0.010, 0.010, 0.010, 0.010, 0.010, 0.010, 0.010, 0.010]
+    short_rate:    [0.0375, 0.0350, 0.0350, 0.0350, 0.0350, 0.0350, 0.0350, 0.0350]
+    organic_annual: {alternatives: 0.06, equity: 0.04, fixed_income: 0.05, liquidity: 0.03}
+    incentive_mult: 1.0
+    investments_mult: 1.0
+    provision_mult: 1.0
+  bull:
+    equity_ret_q:  [0.040, 0.035, 0.035, 0.030, 0.030, 0.030, 0.030, 0.030]
+    bond_ret_q:    [0.015, 0.015, 0.012, 0.012, 0.012, 0.012, 0.012, 0.012]
+    short_rate:    [0.0375, 0.0325, 0.0300, 0.0300, 0.0300, 0.0300, 0.0300, 0.0300]
+    organic_annual: {alternatives: 0.09, equity: 0.07, fixed_income: 0.07, liquidity: 0.05}
+    incentive_mult: 1.4
+    investments_mult: 1.5
+    provision_mult: 0.8
+  bear:
+    equity_ret_q:  [-0.030, -0.020, 0.000, 0.010, 0.010, 0.015, 0.015, 0.015]
+    bond_ret_q:    [0.005, 0.005, 0.005, 0.005, 0.008, 0.008, 0.008, 0.008]
+    short_rate:    [0.0375, 0.0350, 0.0325, 0.0300, 0.0300, 0.0300, 0.0300, 0.0300]
+    organic_annual: {alternatives: 0.02, equity: 0.00, fixed_income: 0.02, liquidity: 0.02}
+    incentive_mult: 0.6
+    investments_mult: 0.3
+    provision_mult: 1.6
+  stress:   # equity -25% over the first two quarters, credit spreads widen, outflows
+    equity_ret_q:  [-0.150, -0.118, 0.020, 0.020, 0.020, 0.020, 0.020, 0.020]
+    bond_ret_q:    [-0.030, -0.010, 0.010, 0.010, 0.010, 0.010, 0.010, 0.010]
+    short_rate:    [0.0375, 0.0300, 0.0250, 0.0250, 0.0250, 0.0250, 0.0250, 0.0250]
+    organic_annual: {alternatives: -0.04, equity: -0.08, fixed_income: -0.04, liquidity: 0.06}
+    incentive_mult: 0.15
+    investments_mult: -0.5
+    provision_mult: 3.0
+incentive_seasonality: [0.20, 0.20, 0.22, 0.38]      # Q1..Q4 weights of annual incentive fees (assumption)
+comp_ratio_target: 0.446            # FY2025 AWM comp / net revenues (public, GS FY2025 10-K segment disclosure)
+comp_fixed_floor_share: 0.85        # fixed floor as share of base-period comp
+noncomp_variable_rate: 0.10         # variable non-comp as % of net revenue (assumption)
+inflation_annual: 0.03
+pbl: {nim0: 0.0250, nim_beta_to_short_rate: 0.35, loan_growth_annual: 0.05}
+budget_targets: {revenue_growth: 0.08, pretax_margin: 0.30, source: "secondary press reports - UNVERIFIED"}
