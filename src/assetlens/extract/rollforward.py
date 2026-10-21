@@ -11,8 +11,8 @@ BEGIN = re.compile(r"(beginning (of (the )?)?(period|quarter|balance)|^beginning
 END = re.compile(r"(^ending (assets|aum|balance)|^assets under (management|supervision)[^,]*\bat\b.*\d{4}$|ending balance|end of (the )?(period|quarter)|^balance.*end)", re.IGNORECASE)
 FLOWS = re.compile(r"^(total )?net (cash )?(inflows|flows|new business|long-term (net )?(inflows|flows))", re.IGNORECASE)
 MARKET = re.compile(r"(market (appreciation|depreciation|gains|losses|change|movement|impact)|^market|appreciation|depreciation)", re.IGNORECASE)
-OTHER = re.compile(r"(distributions|foreign|fx|acquisition|disposition|other|transfer|model delivery)", re.IGNORECASE)
-SKIP = re.compile(r"(before|prior to|change during|total change|percent|%|manager-driven|adjusted assets)", re.IGNORECASE)
+OTHER = re.compile(r"(distributions|foreign|fx|acquisition|acquired|disposition|other|transfer|model delivery)", re.IGNORECASE)
+SKIP = re.compile(r"(before|prior to|change during|total change|percent|%|manager-driven|adjusted assets|preacquisition|^long-term (sales|redemptions|net exchanges|reinvested|inflows|outflows))", re.IGNORECASE)
 
 
 @dataclass

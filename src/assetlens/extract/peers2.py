@@ -132,8 +132,9 @@ def run_ms(client: EdgarClient, m: pd.DataFrame) -> pd.DataFrame:
     return pd.DataFrame(out)
 
 
-JPM_LM = {r"^Asset management(, administration and commissions| fees)$": "fees_asset_management", r"^Total net revenue$": "net_revenues", r"^Compensation expense$": "comp_total",
-          r"^Total noninterest expense$": "opex", r"^Income before income tax expense$": "pretax_income"}
+JPM_LM = {r"^Asset management(, administration and commissions| fees)$": "fees_asset_management", r"^Total net revenue$": "net_revenues",
+          r"^Compensation expense$": "comp_total", r"^Total noninterest expense$": "opex",
+          r"^Income before income tax expense$": "pretax_income"}
 
 
 def jpm_aum(sp, mt) -> list[dict]:
@@ -181,10 +182,10 @@ def run_jpm(client: EdgarClient, m: pd.DataFrame) -> pd.DataFrame:
         sp = soup(client.get(r.url))
         mt = meta("JPM", "AWM", r.reportDate, r.url, r.accessionNumber, r.form, r.filingDate)
         pt = "FY" if r.form == "10-K" else "Q"
-        got = _pnl(sp, mt, ["Revenue by line of business", "Global Private Bank", "Asset management fees", "Total net revenue", "Compensation expense"], JPM_LM, pt)
-        if not got:   # 2019-22 layout: 'Asset management, administration and commissions'; AWM revenue is < $10bn (guards vs other segments)
-            got = _pnl(sp, mt, ["Asset management, administration and commissions", "Total net revenue", "Compensation expense", "Income before income tax"], JPM_LM, pt,
-                       accept=lambda g: g.get("net_revenues", {"value": 1e9})["value"] < 10_000)
+        okrev = lambda g: (12_000 < g.get("net_revenues", {"value": 0})["value"] < 25_000) if pt == "FY" else (g.get("net_revenues", {"value": 1e9})["value"] < 10_000)
+        got = _pnl(sp, mt, ["Revenue by line of business", "Global Private Bank", "Asset management fees", "Total net revenue", "Compensation expense"], JPM_LM, pt, accept=okrev)
+        if not got:   # 2019-22 layout: 'Asset management, administration and commissions'; AWM revenue guard vs other segments
+            got = _pnl(sp, mt, ["Asset management, administration and commissions", "Total net revenue", "Compensation expense", "Income before income tax"], JPM_LM, pt, accept=okrev)
         out += got
         if r.form == "10-Q":
             out += jpm_aum(sp, mt)
