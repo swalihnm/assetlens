@@ -46,7 +46,9 @@ def rows(tbl) -> list[tuple[str, list[float | None], str]]:
                 continue
             if c.startswith("(") and not c.endswith(")") and i + 1 < len(cells) and cells[i + 1] == ")":
                 c += ")"
-            if c in DASHES:
+            if c.lower().strip("()*") in ("nm", "n/m", "na", "n/a", "nmf"):
+                nums.append(None)  # placeholder keeps column alignment
+            elif c in DASHES:
                 nums.append(0.0)
             elif NUM.match(c):
                 nums.append(to_num(c))
