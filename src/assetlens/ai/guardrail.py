@@ -42,15 +42,28 @@ class GuardResult:
     checked: int = 0
 
 
-def verify(text: str, facts: dict[str, float], extra_allowed: set[float] | None = None) -> GuardResult:
-    pool = [x for v in facts.values() for x in _variants(float(v))]
+def verify(text: str, facts: dict[str, float], extra_allowed: set[float] | None = None, single_use: bool = True) -> GuardResult:
+    """Each fact may justify only ONE number in the text (single_use): a wrong figure that happens to equal a different
+    fact elsewhere in the draft is then caught when that fact is needed again. Repeating a figure intentionally is flagged
+    for review (conservative)."""
     allowed = extra_allowed or set()
+    used: set[str] = set()
     bad, n = [], 0
     for x, dec, unit, raw in extract_numbers(text):
         n += 1
-        if x in allowed or any(round(c, dec) == round(x, dec) or abs(abs(c) - abs(x)) <= 0.5 * 10 ** -dec + 1e-9 for c in pool):
+        if x in allowed:
             continue
-        bad.append(raw + (unit if unit else ""))
+        hit = None
+        for key, v in facts.items():
+            if single_use and key in used:
+                continue
+            if any(round(c, dec) == round(x, dec) or abs(abs(c) - abs(x)) <= 0.5 * 10 ** -dec + 1e-9 for c in _variants(float(v))):
+                hit = key
+                break
+        if hit is None:
+            bad.append(raw + (unit if unit else ""))
+        else:
+            used.add(hit)
     return GuardResult(ok=not bad, unmatched=bad, checked=n)
 
 

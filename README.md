@@ -19,6 +19,8 @@
 | Excel model (live formulas, 13 checks, Python parity) | `outputs/excel/AssetLens_PnL_Model.xlsx` |
 | Board pack (5 slides + appendix) | `outputs/deck/AssetLens_Board_Pack.pptx` |
 | Power BI assets (star schema, Power Query, DAX, RLS guide) | `outputs/powerbi/`, `powerbi/` |
+| Streamlit app (8 pages), FastAPI | `app/streamlit_app.py` (`make app`), `src/assetlens/api/app.py` (`make api`) |
+| AI layer (text-to-SQL, RAG, guardrail, extraction) | `src/assetlens/ai/`, results in `docs/modules/M17.md` |
 | Warehouse (DuckDB) | `data/warehouse/assetlens.duckdb` (rebuilt by `make`) |
 | Governance | `docs/` (MODEL_DOCUMENTATION, DECISIONS, DATA_GAPS, METRICS, ASSUMPTIONS_REGISTER.csv, DATA_DICTIONARY, RECONCILIATION_REPORT) |
 | Progress and open items | `progress.md` |
@@ -36,4 +38,4 @@ SEC requests are throttled to 8/s and cached under `data/raw/`; reruns make no n
 Every public fact has provenance (accession number, table locator, raw text, method). GS segment checks pass 19/19; peer AUM roll-forwards are accepted only if they close and chain. Known gaps (GS pre-2022 AWM quarters, Q3-2026 opex, two T. Rowe quarters, BLK market split) are listed in `docs/DATA_GAPS.md`.
 
 ## Status
-Phase 1 plus market sensitivity, Monte Carlo, backtest, FastAPI and dbt are built; compensation, sales and expense modules, MS/JPM/BEN peers and the AI layer are not yet. See `progress.md`.
+All 18 modules are built. Not done or not verified: live-LLM evaluation (no API key; offline baselines reported in `docs/modules/M17.md`), the Power BI `.pbix` and DAX execution, a PDF of the deck, and some older-filing parsers for MS/JPM/BEN (see `docs/DATA_GAPS.md`). See `progress.md`.
