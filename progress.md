@@ -6,9 +6,9 @@ _Last updated: 2026-10-21. Spec: AssetLens_Project_Spec.md. Phase 1 target = F&S
 
 | Module | Status | Evidence / notes |
 |---|---|---|
-| M0 Setup | Done (partial) | uv env, Makefile, pyproject, .env(.example). **Missing:** pre-commit, Dockerfile, GitHub Actions |
+| M0 Setup | Done (basic) | uv env, Makefile, pre-commit config, Dockerfile, CI workflow (untested on GitHub; CI has no warehouse so data tests skip) |
 | M1 EDGAR + FRED ingestion | Done | 593-filing manifest, cached, rate-limited; 8 FRED series |
-| M2 Extraction + reconciliation | Done for GS, BLK, TROW, IVZ | Closure-gated AUM roll-forwards; GS reconciliation 19/19 on each check. Gaps in `docs/DATA_GAPS.md`. **Missing:** auto-generated `RECONCILIATION_REPORT.md`, review queue |
+| M2 Extraction + reconciliation | Done for GS, BLK, TROW, IVZ | Closure-gated AUM roll-forwards; GS reconciliation 19/19 on each check. Gaps in `docs/DATA_GAPS.md`. Auto-generated `RECONCILIATION_REPORT.md` done. **Missing:** LLM review queue (Phase 3) |
 | M3 Warehouse | Partial | DuckDB `fact_financials` + `fact_provenance` + marts built in Python. **Missing:** dbt project and tests, dbt docs |
 | M4 Benchmarking | Done | `mart_peer_benchmark`, fee-compression regression, AUM decomposition, comparability flags, charts |
 | M5 Market sensitivity | Not started | Phase 2 |
@@ -28,10 +28,10 @@ _Last updated: 2026-10-21. Spec: AssetLens_Project_Spec.md. Phase 1 target = F&S
 `make test` – 30 pass (fast). `make test-all` adds the ~80 s Excel parity test.
 
 ## Still to do for Phase 1
-1. README with sourced findings and screenshots
-2. docs: MODEL_DOCUMENTATION, ASSUMPTIONS_REGISTER.csv, DATA_DICTIONARY, METRICS, per-module notes, RECONCILIATION_REPORT
+1. ~~README~~ done (screenshots = 2 charts)
+2. ~~docs~~ done (README, MODEL_DOCUMENTATION, METRICS, DATA_GAPS, DECISIONS, ASSUMPTIONS_REGISTER, DATA_DICTIONARY, RECONCILIATION_REPORT). Per-module notes still to write
 3. dbt project over the warehouse with tests and lineage
-4. Dockerfile, pre-commit, GitHub Actions
+4. ~~Dockerfile, pre-commit, CI~~ added (unverified)
 5. Monthly profitability pack (sample month)
 
 ## Open items for you

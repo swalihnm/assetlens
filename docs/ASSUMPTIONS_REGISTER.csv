@@ -1,0 +1,61 @@
+id,assumption,value,unit,source,rationale,owner,sensitivity_rank
+A001,Comp ratio target,0.446,% net revenue,GS FY2025 10-K segment comp / net revenues (public),Latest annual segment disclosure,Abdulla Swalih NM,1
+A002,Comp fixed floor share,0.85,share of base comp,assumption,Fixed salary component,Abdulla Swalih NM,6
+A003,Variable non-comp rate,0.1,% net revenue,assumption,Transaction-linked costs,Abdulla Swalih NM,5
+A004,Cost inflation,0.03,p.a.,assumption (CPI context from FRED),Non-comp growth,Abdulla Swalih NM,7
+A005,Relative fee yield alternatives,2.4,x,assumption,GS discloses total fees only; relative yields calibrated to base fees,Abdulla Swalih NM,3
+A006,Relative fee yield equity,1.0,x,assumption,GS discloses total fees only; relative yields calibrated to base fees,Abdulla Swalih NM,3
+A007,Relative fee yield fixed_income,0.55,x,assumption,GS discloses total fees only; relative yields calibrated to base fees,Abdulla Swalih NM,3
+A008,Relative fee yield liquidity,0.12,x,assumption,GS discloses total fees only; relative yields calibrated to base fees,Abdulla Swalih NM,3
+A009,Fee compression alternatives,0.02,p.a.,assumption; peer slopes in mart_fee_compression,Industry fee pressure,Abdulla Swalih NM,2
+A010,Fee compression equity,0.03,p.a.,assumption; peer slopes in mart_fee_compression,Industry fee pressure,Abdulla Swalih NM,2
+A011,Fee compression fixed_income,0.025,p.a.,assumption; peer slopes in mart_fee_compression,Industry fee pressure,Abdulla Swalih NM,2
+A012,Fee compression liquidity,0.01,p.a.,assumption; peer slopes in mart_fee_compression,Industry fee pressure,Abdulla Swalih NM,2
+A013,Scenario base: organic growth,"{'alternatives': 0.06, 'equity': 0.04, 'fixed_income': 0.05, 'liquidity': 0.03}",p.a. by class,assumption,Scenario design,Abdulla Swalih NM,4
+A014,Scenario base: equity return path (qtr),"[0.02, 0.02, 0.02, 0.02, 0.02, 0.02, 0.02, 0.02]",per quarter,assumption,Scenario design,Abdulla Swalih NM,4
+A015,Scenario bull: organic growth,"{'alternatives': 0.09, 'equity': 0.07, 'fixed_income': 0.07, 'liquidity': 0.05}",p.a. by class,assumption,Scenario design,Abdulla Swalih NM,4
+A016,Scenario bull: equity return path (qtr),"[0.04, 0.035, 0.035, 0.03, 0.03, 0.03, 0.03, 0.03]",per quarter,assumption,Scenario design,Abdulla Swalih NM,4
+A017,Scenario bear: organic growth,"{'alternatives': 0.02, 'equity': 0.0, 'fixed_income': 0.02, 'liquidity': 0.02}",p.a. by class,assumption,Scenario design,Abdulla Swalih NM,4
+A018,Scenario bear: equity return path (qtr),"[-0.03, -0.02, 0.0, 0.01, 0.01, 0.015, 0.015, 0.015]",per quarter,assumption,Scenario design,Abdulla Swalih NM,4
+A019,Scenario stress: organic growth,"{'alternatives': -0.04, 'equity': -0.08, 'fixed_income': -0.04, 'liquidity': 0.06}",p.a. by class,assumption,Scenario design,Abdulla Swalih NM,4
+A020,Scenario stress: equity return path (qtr),"[-0.15, -0.118, 0.02, 0.02, 0.02, 0.02, 0.02, 0.02]",per quarter,assumption,Scenario design,Abdulla Swalih NM,4
+A021,Budget growth target,0.08,p.a.,UNVERIFIED secondary press reports,Top-down budget illustration,Abdulla Swalih NM,
+A022,Budget pre-tax margin target,0.3,%,UNVERIFIED secondary press reports,Top-down budget illustration,Abdulla Swalih NM,
+A023,GCC: base_location,DIFC,,assumption (illustrative),Growth case,Abdulla Swalih NM,
+A024,GCC: years,7,,assumption (illustrative),Growth case,Abdulla Swalih NM,
+A025,GCC: advisors_hired,"[6, 8, 8, 8, 6, 4, 4]",,assumption (illustrative),Growth case,Abdulla Swalih NM,
+A026,GCC: advisor_attrition,0.08,,assumption (illustrative),Growth case,Abdulla Swalih NM,
+A027,GCC: support_per_advisor,0.4,,assumption (illustrative),Growth case,Abdulla Swalih NM,
+A028,GCC: core_staff,8,,assumption (illustrative),Growth case,Abdulla Swalih NM,
+A029,GCC: mature_aum_per_advisor_musd,400.0,,assumption (illustrative),Growth case,Abdulla Swalih NM,
+A030,GCC: ramp_midpoint_years,1.5,,assumption (illustrative),Growth case,Abdulla Swalih NM,
+A031,GCC: ramp_steepness,1.6,,assumption (illustrative),Growth case,Abdulla Swalih NM,
+A032,GCC: client_attrition,0.05,,assumption (illustrative),Growth case,Abdulla Swalih NM,
+A033,GCC: net_revenue_bps,85.0,,assumption (illustrative),Growth case,Abdulla Swalih NM,
+A034,GCC: advisor_cost_musd,0.65,,assumption (illustrative),Growth case,Abdulla Swalih NM,
+A035,GCC: support_cost_musd,0.25,,assumption (illustrative),Growth case,Abdulla Swalih NM,
+A036,GCC: premises_tech_per_head_musd,0.06,,assumption (illustrative),Growth case,Abdulla Swalih NM,
+A037,GCC: cost_inflation,0.03,,assumption (illustrative),Growth case,Abdulla Swalih NM,
+A038,GCC: regulatory_capital_musd,15.0,,assumption (illustrative),Growth case,Abdulla Swalih NM,
+A039,GCC: discount_rate,0.11,,assumption (illustrative),Growth case,Abdulla Swalih NM,
+A040,GCC: terminal_growth,0.03,,assumption (illustrative),Growth case,Abdulla Swalih NM,
+A041,GCC: variable_comp_pct_of_revenue,0.1,,assumption (illustrative),Growth case,Abdulla Swalih NM,
+A042,GCC location DIFC,"{'cost_index': 1.0, 'setup_capex_musd': 4.0, 'licence_musd_yr': 0.6, 'tax_rate': 0.09, 'note': 'Dubai; UAE CT 9%, qualifying free-zone income may be 0% - VERIFY'}",,assumption - VERIFY tax rates,Location comparison,Abdulla Swalih NM,
+A043,GCC location KAFD,"{'cost_index': 0.92, 'setup_capex_musd': 4.5, 'licence_musd_yr': 0.5, 'tax_rate': 0.2, 'note': 'Riyadh; KSA CIT 20% on foreign share - VERIFY'}",,assumption - VERIFY tax rates,Location comparison,Abdulla Swalih NM,
+A044,GCC location ADGM,"{'cost_index': 0.98, 'setup_capex_musd': 3.8, 'licence_musd_yr': 0.5, 'tax_rate': 0.09, 'note': 'Abu Dhabi; UAE CT 9% - VERIFY'}",,assumption - VERIFY tax rates,Location comparison,Abdulla Swalih NM,
+A045,Synthetic: seed,20261021,,synthetic generator (config/synthetic.yaml),Calibrated to public segment totals,Abdulla Swalih NM,
+A046,Synthetic: quarters,"{'start': '2022-03-31', 'end': '2026-06-30'}",,synthetic generator (config/synthetic.yaml),Calibrated to public segment totals,Abdulla Swalih NM,
+A047,Synthetic: gl_quarters,8,,synthetic generator (config/synthetic.yaml),Calibrated to public segment totals,Abdulla Swalih NM,
+A048,Synthetic: businesses,"{'PE': {'name': 'Public Equity', 'intensity': 1.0, 'yield_rel': 1.0, 'fee_asset': 'aus_equity'}, 'FIMA': {'name': 'Fixed Income & Multi-Asset', 'intensity': 0.95, 'yield_rel': 0.55, 'fee_asset': 'aus_fixed_income'}, 'LIQ': {'name': 'Liquidity Solutions', 'intensity': 0.7, 'yield_rel': 0.12, 'fee_asset': 'aus_liquidity'}, 'ALT': {'name': 'Alternatives / Private Markets', 'intensity': 0.85, 'yield_rel': 2.4, 'fee_asset': 'aus_alternatives'}, 'PWM': {'name': 'Private Wealth Management', 'intensity': 1.1, 'yield_rel': 1.0, 'fee_asset': None}, 'PBL': {'name': 'Private Banking & Lending', 'intensity': 0.6, 'yield_rel': 1.0, 'fee_asset': None}}",,synthetic generator (config/synthetic.yaml),Calibrated to public segment totals,Abdulla Swalih NM,
+A049,Synthetic: pwm_fee_share,0.3,,synthetic generator (config/synthetic.yaml),Calibrated to public segment totals,Abdulla Swalih NM,
+A050,Synthetic: incentive_split,"{'ALT': 0.8, 'PE': 0.12, 'FIMA': 0.08}",,synthetic generator (config/synthetic.yaml),Calibrated to public segment totals,Abdulla Swalih NM,
+A051,Synthetic: investments_split,"{'ALT': 0.85, 'PWM': 0.15}",,synthetic generator (config/synthetic.yaml),Calibrated to public segment totals,Abdulla Swalih NM,
+A052,Synthetic: pools,"{'TECH': 0.13, 'OPS': 0.08, 'RISK': 0.05, 'FHL': 0.06, 'PREM': 0.03}",,synthetic generator (config/synthetic.yaml),Calibrated to public segment totals,Abdulla Swalih NM,
+A053,Synthetic: regions,"{'AMER': 0.62, 'EMEA': 0.22, 'APAC': 0.14, 'GCC': 0.02}",,synthetic generator (config/synthetic.yaml),Calibrated to public segment totals,Abdulla Swalih NM,
+A054,Synthetic: headcount,"{'start_total': 9500, 'annual_growth': 0.02, 'support_share': 0.3}",,synthetic generator (config/synthetic.yaml),Calibrated to public segment totals,Abdulla Swalih NM,
+A055,Synthetic: advisors,"{'n': 800, 'book_median_musd': 180, 'book_sigma': 0.9, 'annual_attrition': 0.08, 'fee_bps_noise': 0.1}",,synthetic generator (config/synthetic.yaml),Calibrated to public segment totals,Abdulla Swalih NM,
+A056,Synthetic: te,"{'n_claims': 200000, 'violation_rate': 0.015}",,synthetic generator (config/synthetic.yaml),Calibrated to public segment totals,Abdulla Swalih NM,
+A057,Synthetic: gl,{'target_rows': 2600000},,synthetic generator (config/synthetic.yaml),Calibrated to public segment totals,Abdulla Swalih NM,
+A058,Synthetic: savings,{'n_initiatives': 40},,synthetic generator (config/synthetic.yaml),Calibrated to public segment totals,Abdulla Swalih NM,
+A059,Mandate discount rate,0.09,p.a.,assumption,Pricing LTV,Abdulla Swalih NM,
+A060,Mandate hurdle margin,0.15,over FA break-even,assumption,Recommendation rule,Abdulla Swalih NM,
