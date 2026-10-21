@@ -1,0 +1,38 @@
+let
+    Source = Csv.Document(File.Contents(FolderPath & "fact_benchmark.csv"), [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+    Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+    Typed = Table.TransformColumnTypes(Promoted, {
+        {"period_end", type datetime},
+        {"ticker", type text},
+        {"aum_end", type number},
+        {"aum_begin", type number},
+        {"aum_avg", type number},
+        {"aum_avg_method", type text},
+        {"net_flows", type number},
+        {"market_other", type number},
+        {"fees", type number},
+        {"net_revenues", type number},
+        {"op_income", type number},
+        {"opex", type number},
+        {"comp", type number},
+        {"op_income_adj", type number},
+        {"fee_yield_bps", type number},
+        {"organic_growth_ann", type number},
+        {"market_impact_pct", type number},
+        {"op_margin", type number},
+        {"comp_ratio", type number},
+        {"efficiency_ratio", type number},
+        {"fee_share_of_revenue", type number},
+        {"fee_yield_t4q_bps", type number},
+        {"organic_growth_t4q", type number},
+        {"op_margin_t4q", type number},
+        {"comp_ratio_t4q", type number},
+        {"operating_leverage_yoy", type number},
+        {"revenue_yoy", type number},
+        {"aum_yoy", type number},
+        {"z_fee_yield_t4q_bps", type number},
+        {"z_organic_growth_t4q", type number},
+        {"z_op_margin_t4q", type number}
+    }, "en-US")
+in
+    Typed

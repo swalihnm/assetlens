@@ -1,0 +1,12 @@
+entity,period,measure,expected_value
+GS,2026-09-30,Fee Yield T4Q (bps),34.7782
+GS,2026-09-30,Ending AUM ($m),4097000.0
+BLK,2026-09-30,Fee Yield T4Q (bps),15.5674
+BLK,2026-09-30,Ending AUM ($m),15488263.0
+TROW,2026-06-30,Fee Yield T4Q (bps),38.6095
+TROW,2026-06-30,Ending AUM ($m),1893400.0
+IVZ,2026-06-30,Fee Yield T4Q (bps),23.8736
+IVZ,2026-06-30,Ending AUM ($m),2470300.0
+GS,base t8,Net Revenue forecast ($m),5895.723
+GS,stress t8,Pre-tax margin,0.15711
+LIQ,2026-06-30,Fully allocated margin (ABC),-0.12672

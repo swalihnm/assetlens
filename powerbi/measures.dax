@@ -1,0 +1,141 @@
+// =====================================================================================
+// AssetLens - DAX measures.  Model: see powerbi/model.md.   ALL $ AMOUNTS ARE USD MILLIONS.
+// Tables: fact_benchmark (ticker x quarter), fact_forecast, fact_budget, fact_profitability,
+//         fact_business_pnl, fact_advisor_monthly, fact_gl, fact_te, fact_savings, dim_*.
+// Business-unit / advisor / expense tables are SYNTHETIC - keep the label in every visual title.
+// Validate against outputs/powerbi/dax_spot_checks.csv after loading.
+// =====================================================================================
+
+// ---------- Display folder: _Helpers ----------
+_Quarters in Selection = DISTINCTCOUNT ( dim_date[quarter_key] )
+
+_Selected Ticker = SELECTEDVALUE ( dim_company[ticker], "All" )
+
+// ---------- Display folder: Peer Benchmarking ----------
+Management Fees = SUM ( fact_benchmark[fees] )
+
+Net Revenue = SUM ( fact_benchmark[net_revenues] )
+
+Operating Income = SUM ( fact_benchmark[op_income] )
+
+Compensation Expense = SUM ( fact_benchmark[comp] )
+
+Net Flows = SUM ( fact_benchmark[net_flows] )
+
+Ending AUM =
+    -- period-end balance: last quarter in the current filter context
+    CALCULATE ( SUM ( fact_benchmark[aum_end] ), LASTDATE ( fact_benchmark[period_end] ) )
+
+Beginning AUM =
+    CALCULATE ( SUM ( fact_benchmark[aum_begin] ), FIRSTDATE ( fact_benchmark[period_end] ) )
+
+Average AUM =
+    AVERAGEX ( VALUES ( dim_date[quarter_key] ), CALCULATE ( SUM ( fact_benchmark[aum_avg] ) ) )
+
+Fee Yield (bps) =
+    DIVIDE ( [Management Fees] * 4 / [_Quarters in Selection], [Average AUM] ) * 10000
+
+Organic Growth % (ann.) =
+    DIVIDE ( [Net Flows] * 4 / [_Quarters in Selection], [Beginning AUM] )
+
+Market and Other Impact % =
+    DIVIDE ( SUM ( fact_benchmark[market_other] ), [Beginning AUM] )
+
+Comp Ratio = DIVIDE ( [Compensation Expense], [Net Revenue] )
+
+Pre-tax Margin = DIVIDE ( [Operating Income], [Net Revenue] )   // operating-profit measure; see comparability_flags
+
+Efficiency Ratio = DIVIDE ( SUM ( fact_benchmark[opex] ), [Net Revenue] )
+
+Fee Revenue Share = DIVIDE ( [Management Fees], [Net Revenue] )
+
+// Trailing four quarters (T4Q) - relies on the date table being marked as a date table
+Fee Yield T4Q (bps) =
+    VAR _end = MAX ( dim_date[date] )
+    VAR _win = DATESINPERIOD ( dim_date[date], _end, -4, QUARTER )
+    VAR _fees = CALCULATE ( [Management Fees], _win )
+    VAR _avg = CALCULATE ( [Average AUM], _win )
+    RETURN DIVIDE ( _fees, _avg ) * 10000
+
+Organic Growth T4Q =
+    VAR _end = MAX ( dim_date[date] )
+    VAR _win = DATESINPERIOD ( dim_date[date], _end, -4, QUARTER )
+    RETURN DIVIDE ( CALCULATE ( [Net Flows], _win ), CALCULATE ( [Beginning AUM], _win ) )
+
+Pre-tax Margin T4Q =
+    VAR _win = DATESINPERIOD ( dim_date[date], MAX ( dim_date[date] ), -4, QUARTER )
+    RETURN DIVIDE ( CALCULATE ( [Operating Income], _win ), CALCULATE ( [Net Revenue], _win ) )
+
+Operating Leverage YoY =
+    VAR _py = SAMEPERIODLASTYEAR ( dim_date[date] )
+    VAR _rev = DIVIDE ( [Net Revenue], CALCULATE ( [Net Revenue], _py ) ) - 1
+    VAR _opx = DIVIDE ( SUM ( fact_benchmark[opex] ), CALCULATE ( SUM ( fact_benchmark[opex] ), _py ) ) - 1
+    RETURN _rev - _opx
+
+Net Revenue YoY % = DIVIDE ( [Net Revenue], CALCULATE ( [Net Revenue], SAMEPERIODLASTYEAR ( dim_date[date] ) ) ) - 1
+Net Revenue QoQ % = DIVIDE ( [Net Revenue], CALCULATE ( [Net Revenue], DATEADD ( dim_date[date], -1, QUARTER ) ) ) - 1
+Ending AUM YoY % = DIVIDE ( [Ending AUM], CALCULATE ( [Ending AUM], SAMEPERIODLASTYEAR ( dim_date[date] ) ) ) - 1
+
+Fee Yield Peer Z-score =
+    VAR _t = [Fee Yield T4Q (bps)]
+    VAR _all = CALCULATETABLE ( ADDCOLUMNS ( VALUES ( dim_company[ticker] ), "@v", [Fee Yield T4Q (bps)] ), ALL ( dim_company ) )
+    RETURN DIVIDE ( _t - AVERAGEX ( _all, [@v] ), STDEVX.S ( _all, [@v] ) )
+
+// ---------- Display folder: P&L Forecast ----------
+Forecast Net Revenue = SUM ( fact_forecast[net_revenues] )
+Forecast Pre-tax = SUM ( fact_forecast[pretax] )
+Forecast Pre-tax Margin = DIVIDE ( [Forecast Pre-tax], [Forecast Net Revenue] )
+Forecast Comp Ratio = DIVIDE ( SUM ( fact_forecast[comp] ), [Forecast Net Revenue] )
+Forecast Ending AUS = CALCULATE ( SUM ( fact_forecast[aus_total] ), LASTDATE ( fact_forecast[period_end] ) )
+Scenario Spread (Bull - Bear) =
+    CALCULATE ( [Forecast Pre-tax], dim_scenario[scenario] = "bull" ) - CALCULATE ( [Forecast Pre-tax], dim_scenario[scenario] = "bear" )
+
+// ---------- Display folder: Budget ----------
+Actual = SUM ( fact_budget[actual_revenue] )
+Budget = SUM ( fact_budget[budget_revenue] )
+Prior Year = SUM ( fact_budget[prior_year_revenue] )
+Budget Variance = [Actual] - [Budget]
+Budget Variance % = DIVIDE ( [Budget Variance], ABS ( [Budget] ) )
+YoY Variance % = DIVIDE ( [Actual] - [Prior Year], ABS ( [Prior Year] ) )
+Variance Flag = IF ( ABS ( [Budget Variance %] ) > 0.05, "REVIEW", "OK" )
+Run-rate Revenue (annualised) = CALCULATE ( [Actual], LASTDATE ( fact_budget[period_end] ) ) * 4
+
+// ---------- Display folder: Profitability (SYNTHETIC businesses) ----------
+// Method slicer: disconnected table  dim_allocation_method = DATATABLE ( "method", STRING, { {"revenue"}, {"headcount"}, {"abc"}, {"step_down"}, {"reciprocal"} } )
+Selected Method = SELECTEDVALUE ( dim_allocation_method[method], "abc" )
+Prof Revenue = CALCULATE ( SUM ( fact_profitability[net_revenues] ), fact_profitability[method] = [Selected Method] )
+Contribution Margin = CALCULATE ( SUM ( fact_profitability[contribution_margin] ), fact_profitability[method] = [Selected Method] )
+Allocated Costs = CALCULATE ( SUM ( fact_profitability[allocated_musd] ), fact_profitability[method] = [Selected Method] )
+Fully Allocated Pre-tax = [Contribution Margin] - [Allocated Costs]
+Contribution Margin % = DIVIDE ( [Contribution Margin], [Prof Revenue] )
+Fully Allocated Margin = DIVIDE ( [Fully Allocated Pre-tax], [Prof Revenue] )
+Business Rank (selected method) =
+    RANKX ( ALLSELECTED ( dim_business[business] ), [Fully Allocated Margin], , DESC, DENSE )
+Margin under Revenue Method = CALCULATE ( DIVIDE ( SUM ( fact_profitability[fully_allocated_pretax] ), SUM ( fact_profitability[net_revenues] ) ), fact_profitability[method] = "revenue" )
+Margin under ABC Method = CALCULATE ( DIVIDE ( SUM ( fact_profitability[fully_allocated_pretax] ), SUM ( fact_profitability[net_revenues] ) ), fact_profitability[method] = "abc" )
+Method Sensitivity (pp) = ( [Margin under ABC Method] - [Margin under Revenue Method] ) * 100
+Looks Loss-Making Only Because Of Method =
+    IF ( [Contribution Margin] > 0 && [Fully Allocated Pre-tax] < 0, "FLAG", "" )
+
+// ---------- Display folder: Sales productivity & compensation (SYNTHETIC) ----------
+Active Advisors = DISTINCTCOUNT ( fact_advisor_monthly[advisor_id] )
+Advisor Revenue ($m) = SUM ( fact_advisor_monthly[revenue_musd] )
+Revenue per Advisor ($m) = DIVIDE ( [Advisor Revenue ($m)], [Active Advisors] )
+NNA ($m) = SUM ( fact_advisor_monthly[nna_musd] )
+NNA % of AUM (ann.) = DIVIDE ( [NNA ($m)] * 4 / [_Quarters in Selection], SUM ( fact_advisor_monthly[aum_musd] ) / [_Quarters in Selection] )
+
+// ---------- Display folder: Expense & savings (SYNTHETIC) ----------
+Total Spend ($m) = SUM ( fact_gl[amount_musd] )
+Non-comp Spend ($m) = CALCULATE ( [Total Spend ($m)], fact_gl[is_comp] = FALSE () )
+T&E Claims = COUNTROWS ( fact_te )
+T&E Flagged Rate = DIVIDE ( CALCULATE ( COUNTROWS ( fact_te ), fact_te[is_violation] = TRUE () ), [T&E Claims] )
+Savings Target ($m) = SUM ( fact_savings[target_savings_musd] )
+Savings Realised ($m) = SUM ( fact_savings[realised_to_date_musd] )
+Savings Realisation % = DIVIDE ( [Savings Realised ($m)], [Savings Target ($m)] )
+
+// ---------- Row-level security (define in Modeling > Manage roles; see model.md) ----------
+// Role "BusinessHead":  security_user_map filter  =  [user_principal_name] = USERPRINCIPALNAME()
+//   applied to dim_business via:  dim_business[business] IN
+//     SELECTCOLUMNS ( FILTER ( security_user_map, security_user_map[user_principal_name] = USERPRINCIPALNAME() && security_user_map[business] <> "ALL" ), "b", security_user_map[business] )
+//   OR the user has business = "ALL" (CFO).
+// Role "RegionalCFO":   dim_region[region] equivalent with the region column.
