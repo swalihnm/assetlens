@@ -1,0 +1,21 @@
+# Synthetic AWM internal data - every number here is an ASSUMPTION (see docs/ASSUMPTIONS_REGISTER.csv)
+seed: 20261021
+quarters: {start: "2022-03-31", end: "2026-06-30"}      # quarters with a full public P&L (opex known)
+gl_quarters: 8                                          # last N quarters in the general ledger
+businesses:
+  PE:   {name: "Public Equity",                     intensity: 1.00, yield_rel: 1.00, fee_asset: aus_equity}
+  FIMA: {name: "Fixed Income & Multi-Asset",        intensity: 0.95, yield_rel: 0.55, fee_asset: aus_fixed_income}
+  LIQ:  {name: "Liquidity Solutions",               intensity: 0.70, yield_rel: 0.12, fee_asset: aus_liquidity}
+  ALT:  {name: "Alternatives / Private Markets",    intensity: 0.85, yield_rel: 2.40, fee_asset: aus_alternatives}
+  PWM:  {name: "Private Wealth Management",         intensity: 1.10, yield_rel: 1.00, fee_asset: null}
+  PBL:  {name: "Private Banking & Lending",         intensity: 0.60, yield_rel: 1.00, fee_asset: null}
+pwm_fee_share: 0.30            # share of public "Management and other fees" attributed to PWM
+incentive_split: {ALT: 0.80, PE: 0.12, FIMA: 0.08}
+investments_split: {ALT: 0.85, PWM: 0.15}
+pools: {TECH: 0.13, OPS: 0.08, RISK: 0.05, FHL: 0.06, PREM: 0.03}   # share of total opex
+regions: {AMER: 0.62, EMEA: 0.22, APAC: 0.14, GCC: 0.02}
+headcount: {start_total: 9500, annual_growth: 0.02, support_share: 0.30}
+advisors: {n: 800, book_median_musd: 180, book_sigma: 0.9, annual_attrition: 0.08, fee_bps_noise: 0.10}
+te: {n_claims: 200000, violation_rate: 0.015}
+gl: {target_rows: 2600000}
+savings: {n_initiatives: 40}
