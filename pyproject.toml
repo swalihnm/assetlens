@@ -53,3 +53,6 @@ line-length = 100
 dev = [
     "dbt-duckdb>=1.11.0",
 ]
+
+[tool.ruff.lint]
+ignore = ["E501", "E701", "E702", "E731", "E741"]

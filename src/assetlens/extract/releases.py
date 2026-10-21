@@ -8,8 +8,6 @@ from __future__ import annotations
 
 import re
 
-import pandas as pd
-
 from assetlens.extract.tables import find_tables, norm, rows, soup
 
 Rule = tuple[str, str, int | str, float]  # regex, metric, col, scale

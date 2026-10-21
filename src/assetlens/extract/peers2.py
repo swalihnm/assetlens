@@ -52,7 +52,7 @@ def ms_aum(sp, mt, begin_date: str) -> list[dict]:
         low = head.lower()
         if not all(k in low for k in ("inflows", "outflows", "market impact")):
             continue
-        mm = re.search(r"at (\w+ \d{1,2}, \d{4})", head, re.I)
+        mm = re.search(r"at (\w+ \d{1,2}, \d{4})", head, re.IGNORECASE)
         if not mm or pd.Timestamp(mm.group(1)) != pd.Timestamp(begin_date):
             continue
         rr = rows(t)

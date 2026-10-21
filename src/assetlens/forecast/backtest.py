@@ -9,9 +9,7 @@ from __future__ import annotations
 from pathlib import Path
 
 import duckdb
-import numpy as np
 import pandas as pd
-import yaml
 
 from assetlens.forecast.engine import CFG, CLASSES
 from assetlens.warehouse.build import DB

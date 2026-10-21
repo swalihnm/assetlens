@@ -92,9 +92,9 @@ def break_even_fee(m: Mandate, basis: str = "marginal", horizon: str = "year1") 
     """Effective fee (bps on year-1 average AUM) at which profit = 0. The tiered schedule is scaled by a
     factor lambda (keeps its shape) and solved with Brent's method."""
     if horizon == "year1":
-        f = lambda lam: cash_flows(m, lam)[basis][0]               # noqa: E731
+        f = lambda lam: cash_flows(m, lam)[basis][0]
     else:
-        f = lambda lam: lifetime_value(m, basis, lam)              # noqa: E731
+        f = lambda lam: lifetime_value(m, basis, lam)
     lam = brentq(f, 1e-6, 50.0, xtol=1e-12)
     avg0 = cash_flows(m)["avg_aum"][0]
     return effective_bps(avg0, m.tiers, lam)
@@ -102,7 +102,7 @@ def break_even_fee(m: Mandate, basis: str = "marginal", horizon: str = "year1") 
 
 def min_viable_aum(m: Mandate, basis: str = "marginal") -> float:
     """Smallest initial AUM ($m) with year-1 profit >= 0 at the PROPOSED fee schedule."""
-    f = lambda a: cash_flows(replace(m, initial_aum=a))[basis][0]    # noqa: E731
+    f = lambda a: cash_flows(replace(m, initial_aum=a))[basis][0]
     if f(1e5) < 0:
         return float("inf")
     if f(1.0) >= 0:

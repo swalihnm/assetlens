@@ -27,7 +27,7 @@ _Last updated: 2026-10-21. Spec: AssetLens_Project_Spec.md. Phase 1 target = F&S
 | M18 API / Streamlit / Docker / docs | Done | FastAPI (5 endpoints), Streamlit 8 pages (smoke-tested), Dockerfile + CI (unrun) |
 
 ## Tests
-`make test` - 53 pass (fast). `make test-all` adds the Excel parity test (~80 s) and the Streamlit all-pages smoke test.
+`make test` - 54 pass (fast). `make test-all` adds the Excel parity test (~80 s) and the Streamlit all-pages smoke test.
 
 ## Still to do
 1. Live-LLM evaluation of text-to-SQL / RAG answers / extraction (needs an API key)

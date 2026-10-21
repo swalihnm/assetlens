@@ -11,12 +11,12 @@ import numpy as np
 import pandas as pd
 
 matplotlib.use("Agg")
-import matplotlib.pyplot as plt  # noqa: E402
+import matplotlib.pyplot as plt
 
-from assetlens.growth import business_case as GC  # noqa: E402
-from assetlens.pricing import inputs as pin  # noqa: E402
-from assetlens.pricing import mandate as PM  # noqa: E402
-from assetlens.warehouse.build import DB  # noqa: E402
+from assetlens.growth import business_case as GC
+from assetlens.pricing import inputs as pin
+from assetlens.pricing import mandate as PM
+from assetlens.warehouse.build import DB
 
 ROOT = Path(__file__).resolve().parents[3]
 OUT = ROOT / "outputs" / "charts"

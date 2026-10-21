@@ -8,7 +8,7 @@ from __future__ import annotations
 import re
 from dataclasses import dataclass, field
 
-NUM = re.compile(r"(?<![\w.])([-+−]?\$?\d[\d,]*(?:\.\d+)?)\s*(%|bps|bp|tn|bn|m|pp|x)?(?![\w])", re.I)
+NUM = re.compile(r"(?<![\w.])([-+−]?\$?\d[\d,]*(?:\.\d+)?)\s*(%|bps|bp|tn|bn|m|pp|x)?(?![\w])", re.IGNORECASE)
 YEAR = re.compile(r"^(19|20)\d{2}$")
 
 

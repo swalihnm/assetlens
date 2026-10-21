@@ -40,7 +40,7 @@ def dim_date(start="2018-01-01", end="2028-12-31") -> pd.DataFrame:
 def run() -> dict:
     OUT.mkdir(parents=True, exist_ok=True)
     con = duckdb.connect(str(DB), read_only=True)
-    q = lambda s: con.execute(s).df()  # noqa: E731
+    q = lambda s: con.execute(s).df()
     tables: dict[str, pd.DataFrame] = {
         "dim_company": COMPANIES, "dim_date": dim_date(), "dim_scenario": SCENARIOS,
         "dim_metric": q("select distinct metric from fact_financials order by 1"),

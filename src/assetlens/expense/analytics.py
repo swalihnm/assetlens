@@ -3,7 +3,6 @@ All inputs are synthetic (M7)."""
 from __future__ import annotations
 
 import duckdb
-import numpy as np
 import pandas as pd
 
 from assetlens.warehouse.build import DB

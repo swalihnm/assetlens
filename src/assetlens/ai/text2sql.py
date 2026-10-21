@@ -174,7 +174,7 @@ class LLMGenerator:
                   "\nReturn only SQL, no prose. Quarter-end dates look like '2026-06-30'. Ratios are fractions. Never modify data.")
         prompt = question + (f"\nYour previous SQL failed: {error}. Fix it." if error else "")
         sql = self.gw.complete(system, prompt, max_tokens=500).text.strip()
-        return re.sub(r"^```(?:sql)?|```$", "", sql, flags=re.M).strip() or None
+        return re.sub(r"^```(?:sql)?|```$", "", sql, flags=re.MULTILINE).strip() or None
 
 
 # ------------------------------------------------------------------ LangGraph agent

@@ -16,7 +16,7 @@ import numpy as np
 import openpyxl
 
 from assetlens.excel.build_model import OUT
-from assetlens.forecast.engine import CLASSES, load_base, run_scenario
+from assetlens.forecast.engine import load_base, run_scenario
 from assetlens.growth import business_case as GC
 from assetlens.pricing import inputs as pin
 from assetlens.pricing import mandate as PM

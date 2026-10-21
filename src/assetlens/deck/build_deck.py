@@ -6,7 +6,6 @@ from dataclasses import replace
 from pathlib import Path
 
 import duckdb
-import pandas as pd
 from pptx import Presentation
 from pptx.dml.color import RGBColor
 from pptx.util import Inches, Pt
@@ -28,7 +27,7 @@ DISC = ("AssetLens is an independent educational project built from publicly ava
 
 def numbers() -> dict[str, float | str]:
     con = duckdb.connect(str(DB), read_only=True)
-    q = lambda s: con.execute(s).df()  # noqa: E731
+    q = lambda s: con.execute(s).df()
     n: dict[str, float | str] = {}
     b = q("select * from mart_peer_benchmark")
     for t in ("GS", "BLK", "TROW", "IVZ"):
@@ -105,7 +104,7 @@ def build() -> Path:
     pics = charts.make_all()
     prs = Presentation()
     prs.slide_width, prs.slide_height = Inches(13.333), Inches(7.5)
-    f1 = lambda k: f"{n[k]:.1f}"  # noqa: E731
+    f1 = lambda k: f"{n[k]:.1f}"
     # 1 executive summary
     s = _slide(prs, "Executive summary: GS AWM leads on flow growth, margin depends on the market and on the allocation lens",
                "SEC 10-Q/10-K and 8-K Ex.99.1 filings (GS, BLK, TROW, IVZ); AssetLens scenario model; synthetic allocation")

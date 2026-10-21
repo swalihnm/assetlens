@@ -16,7 +16,7 @@ from assetlens.forecast.engine import CFG, CLASSES, Base, calibrate_yields, load
 from assetlens.warehouse.build import DB
 
 matplotlib.use("Agg")
-import matplotlib.pyplot as plt  # noqa: E402
+import matplotlib.pyplot as plt
 
 ROOT = Path(__file__).resolve().parents[3]
 H = CFG["horizon_quarters"]

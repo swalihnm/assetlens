@@ -7,12 +7,12 @@ from dataclasses import dataclass
 
 from assetlens.extract.tables import find_tables, norm, rows
 
-BEGIN = re.compile(r"(beginning (of (the )?)?(period|quarter|balance)|^beginning|^balance.*beginning)", re.I)
-END = re.compile(r"(^ending (assets|aum|balance)|^assets under (management|supervision)[^,]*\bat\b.*\d{4}$|ending balance|end of (the )?(period|quarter)|^balance.*end)", re.I)
-FLOWS = re.compile(r"^(total )?net (cash )?(inflows|flows|new business|long-term (net )?(inflows|flows))", re.I)
-MARKET = re.compile(r"(market (appreciation|depreciation|gains|losses|change|movement|impact)|^market|appreciation|depreciation)", re.I)
-OTHER = re.compile(r"(distributions|foreign|fx|acquisition|disposition|other|transfer|model delivery)", re.I)
-SKIP = re.compile(r"(before|prior to|change during|total change|percent|%|manager-driven|adjusted assets)", re.I)
+BEGIN = re.compile(r"(beginning (of (the )?)?(period|quarter|balance)|^beginning|^balance.*beginning)", re.IGNORECASE)
+END = re.compile(r"(^ending (assets|aum|balance)|^assets under (management|supervision)[^,]*\bat\b.*\d{4}$|ending balance|end of (the )?(period|quarter)|^balance.*end)", re.IGNORECASE)
+FLOWS = re.compile(r"^(total )?net (cash )?(inflows|flows|new business|long-term (net )?(inflows|flows))", re.IGNORECASE)
+MARKET = re.compile(r"(market (appreciation|depreciation|gains|losses|change|movement|impact)|^market|appreciation|depreciation)", re.IGNORECASE)
+OTHER = re.compile(r"(distributions|foreign|fx|acquisition|disposition|other|transfer|model delivery)", re.IGNORECASE)
+SKIP = re.compile(r"(before|prior to|change during|total change|percent|%|manager-driven|adjusted assets)", re.IGNORECASE)
 
 
 @dataclass

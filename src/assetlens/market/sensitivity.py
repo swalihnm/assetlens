@@ -11,9 +11,9 @@ import pandas as pd
 import statsmodels.api as sm
 
 matplotlib.use("Agg")
-import matplotlib.pyplot as plt  # noqa: E402
+import matplotlib.pyplot as plt
 
-from assetlens.warehouse.build import DB  # noqa: E402
+from assetlens.warehouse.build import DB
 
 ROOT = Path(__file__).resolve().parents[3]
 EQ, BOND = "SP500_ret", "BOND_PROXY"
