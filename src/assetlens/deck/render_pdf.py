@@ -13,8 +13,8 @@ from pptx.util import Emu
 from assetlens.deck.build_deck import OUT
 
 matplotlib.use("Agg")
-import matplotlib.image as mpimg  # noqa: E402
-import matplotlib.pyplot as plt  # noqa: E402
+import matplotlib.image as mpimg
+import matplotlib.pyplot as plt
 
 PDF = OUT.with_suffix(".pdf")
 EMU_IN = 914400
