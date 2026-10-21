@@ -21,7 +21,7 @@ from assetlens.warehouse.build import DB  # noqa: E402
 ROOT = Path(__file__).resolve().parents[3]
 OUT = ROOT / "outputs" / "charts"
 SURF, INK, INK2, GRID = "#fcfcfb", "#0b0b0b", "#52514e", "#e6e5e1"
-COL = {"GS": "#2a78d6", "BLK": "#eb6834", "TROW": "#1baf7a", "IVZ": "#eda100"}   # fixed slot per entity
+COL = {"GS": "#2a78d6", "BLK": "#eb6834", "TROW": "#1baf7a", "IVZ": "#eda100", "MS": "#e87ba4", "JPM": "#6250d6", "BEN": "#008300"}   # fixed slot per entity
 SCN = {"bull": "#1baf7a", "base": "#2a78d6", "bear": "#eb6834", "stress": "#52514e"}
 DISC = "AssetLens: independent educational project, public SEC/FRED data; business-unit data synthetic; not investment advice."
 

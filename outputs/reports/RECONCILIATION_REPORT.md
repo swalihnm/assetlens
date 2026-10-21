@@ -1,6 +1,6 @@
 # Reconciliation report (auto-generated)
 
-_Generated 2026-10-21 15:02. GS AWM perimeter, 21 quarters._
+_Generated 2026-10-21 16:07. GS AWM perimeter, 21 quarters._
 
 ## GS segment checks
 
@@ -17,9 +17,12 @@ Failures: **0**
 
 | Ticker | Quarters with roll-forward | Closing | Chaining breaks |
 |---|---|---|---|
+| BEN | 24 | 24 | 0 |
 | BLK | 30 | n/a (residual) | 0 |
 | GS | 20 | 19 | 0 |
 | IVZ | 30 | 30 | 0 |
+| JPM | 30 | 29 | 0 |
+| MS | 2 | 2 | 0 |
 | TROW | 28 | 28 | 2 |
 
 BLK has no begin/market table in its releases; its roll-forward is begin = prior end and market = residual, so closure is true by construction. TROW 2020-Q3 and 2021-Q4 roll-forwards are missing (see DATA_GAPS.md). Chaining breaks around missing quarters are expected.

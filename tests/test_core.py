@@ -62,3 +62,17 @@ def test_benchmark_metric_definitions():
     con.close()
     assert ((m.fees * 4 / m.aum_avg * 10000 - m.fee_yield_bps).abs() < 1e-6).all()
     assert m.fee_yield_bps.between(1, 100).all()
+
+
+@needs_db
+def test_phase2_peers_present_and_chained():
+    con = duckdb.connect(str(DB), read_only=True)
+    m = con.execute("select ticker, count(*) n, count(fee_yield_bps) y from mart_peer_benchmark group by 1").df().set_index("ticker")
+    assert {"MS", "JPM", "BEN"} <= set(m.index) and m.loc["JPM", "y"] >= 6 and m.loc["BEN", "y"] >= 20
+    f = con.execute("select ticker, period_end, metric, value from fact_financials where ticker in ('JPM','BEN') "
+                    "and metric in ('aum_begin','aum_end')").df()
+    con.close()
+    for t, g in f.groupby("ticker"):
+        p = g.pivot_table(index="period_end", columns="metric", values="value").dropna().sort_index()
+        gap = (p.aum_begin - p.aum_end.shift(1)).dropna().abs()
+        assert (gap < 0.001 * p.aum_end.iloc[1:].values).all()

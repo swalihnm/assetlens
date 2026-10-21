@@ -9,10 +9,11 @@ import statsmodels.api as sm
 from assetlens.warehouse.build import DB
 
 FEE_METRIC = {"GS": "rev_mgmt_other_fees", "BLK": "fees_base_sec_lending",
-              "TROW": "fees_investment_advisory", "IVZ": "fees_investment_management"}
+              "TROW": "fees_investment_advisory", "IVZ": "fees_investment_management",
+              "MS": "fees_asset_management", "JPM": "fees_asset_management", "BEN": "fees_investment_management"}
 # operating-profit measure used for the like-for-like margin
 OPINC_METRIC = {"GS": "pretax_earnings", "BLK": "operating_income", "TROW": "operating_income",
-                "IVZ": "operating_income"}
+                "IVZ": "operating_income", "MS": "pretax_income", "JPM": "pretax_income", "BEN": "operating_income"}
 
 COMPARABILITY = pd.DataFrame([
     ("GS", "Unit", "Asset & Wealth Management segment only (not firm); perimeter re-based Q4-2022 (see DECISIONS)."),
@@ -30,6 +31,12 @@ COMPARABILITY = pd.DataFrame([
     ("IVZ", "Unit", "Whole company; GAAP revenues include pass-through service/distribution fees; non-GAAP 'net revenues' stored separately."),
     ("IVZ", "Fee yield", "Investment management fees (gross, GAAP) / average AUM, not net of third-party distribution."),
     ("IVZ", "Margin", "GAAP operating income / GAAP operating revenues; adjusted operating margin on net revenues is higher."),
+    ("MS", "Unit", "Investment Management segment; AUM roll-forward only from 2026 Q1 in the parsed filings (older layouts not parsed) so fee yield is mostly unavailable; P&L from 2021."),
+    ("MS", "Margin", "Segment income before taxes / net revenues; compensation ratio available at segment level."),
+    ("JPM", "Unit", "Asset & Wealth Management segment; AUM roll-forward 2019-2026; segment P&L parsed from 2024 (2023 filings matched a different segment and were dropped)."),
+    ("JPM", "Fee yield", "Asset management fees / average AUM; segment also includes Global Private Bank (lending, deposits) so yield is not like-for-like."),
+    ("BEN", "Unit", "Whole company; fiscal year ends 30 Sep but fiscal quarters end Mar/Jun/Sep/Dec, so quarterly data are already calendar-aligned. AUM jumped on the 2020 Legg Mason acquisition (in 'other')."),
+    ("BEN", "Fee yield", "Investment management fees (gross) / reported average AUM; roll-forward available from 2020-Q3."),
 ], columns=["ticker", "topic", "note"])
 
 
@@ -49,6 +56,8 @@ def build_mart() -> pd.DataFrame:
     w = load()
     out = []
     for t, g in w.groupby(level=0):
+        if t not in FEE_METRIC:          # e.g. MSWM (no AUM series)
+            continue
         g = g.droplevel(0).sort_index()
         g = g.reindex(pd.date_range(g.index.min(), g.index.max(), freq="QE"))
         d = pd.DataFrame(index=g.index)

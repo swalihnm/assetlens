@@ -15,7 +15,11 @@ COMPANIES = pd.DataFrame([
     ("GS", "Goldman Sachs", "Asset & Wealth Management segment", "AUS", "12-31"),
     ("BLK", "BlackRock", "Whole company", "AUM", "12-31"),
     ("TROW", "T. Rowe Price", "Whole company", "AUM", "12-31"),
-    ("IVZ", "Invesco", "Whole company", "AUM", "12-31")],
+    ("IVZ", "Invesco", "Whole company", "AUM", "12-31"),
+    ("MS", "Morgan Stanley", "Investment Management segment", "AUM", "12-31"),
+    ("MSWM", "Morgan Stanley", "Wealth Management segment (P&L only)", "Client assets", "12-31"),
+    ("JPM", "JPMorgan Chase", "Asset & Wealth Management segment", "AUM", "12-31"),
+    ("BEN", "Franklin Resources", "Whole company", "AUM", "09-30")],
     columns=["ticker", "company", "unit_analysed", "asset_measure", "fiscal_year_end"])
 SCENARIOS = pd.DataFrame({"scenario": ["base", "bull", "bear", "stress"], "sort": [2, 1, 3, 4]})
 

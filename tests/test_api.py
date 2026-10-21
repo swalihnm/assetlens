@@ -9,7 +9,7 @@ c = TestClient(app)
 
 
 def test_endpoints():
-    assert len(c.get("/benchmarks").json()) == 4
+    assert len(c.get("/benchmarks").json()) >= 7
     assert len(c.get("/forecast?scenario=stress").json()) == 8
     assert c.get("/forecast?scenario=x").status_code == 404
     r = c.post("/mandate/price", json={}).json()

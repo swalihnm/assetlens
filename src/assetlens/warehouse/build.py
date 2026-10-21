@@ -66,6 +66,20 @@ def peer_long(t: str) -> pd.DataFrame:
     return d[[c for c in PROV if c in d.columns]]
 
 
+def peer2_long(t: str) -> pd.DataFrame:
+    """MS (IM -> 'MS', WM -> 'MSWM'), JPM AWM, BEN. JPM P&L rows that matched a non-AWM segment (net revenues > $10bn) are dropped."""
+    d = pd.read_csv(INT / f"{t}_raw_facts.csv")
+    d = d[d.metric.notna()].copy()
+    if t == "MS":
+        d.loc[d.unit == "WM", "ticker"] = "MSWM"
+    if t == "JPM":
+        bad = d[(d.metric == "net_revenues") & (d.value > 10_000)].period_end.unique()
+        pnl = {"fees_asset_management", "net_revenues", "comp_total", "opex", "pretax_income"}
+        d = d[~(d.period_end.isin(bad) & d.metric.isin(pnl))]
+    d = d.sort_values("filed_date").drop_duplicates(["ticker", "metric", "period_end"], keep="last")
+    return d[[c for c in PROV if c in d.columns]]
+
+
 def chain_filter(df: pd.DataFrame, gaps: list[dict]) -> pd.DataFrame:
     """Keep roll-forwards that chain with the prior quarter; else demote to end-balance only."""
     out = []
@@ -95,7 +109,8 @@ def chain_filter(df: pd.DataFrame, gaps: list[dict]) -> pd.DataFrame:
 
 def build() -> dict:
     gaps: list[dict] = []
-    df = pd.concat([gs_long(), peer_long("BLK"), peer_long("TROW"), peer_long("IVZ")], ignore_index=True)
+    df = pd.concat([gs_long(), peer_long("BLK"), peer_long("TROW"), peer_long("IVZ")]
+                   + [peer2_long(t) for t in ("MS", "JPM", "BEN") if (INT / f"{t}_raw_facts.csv").exists()], ignore_index=True)
     df = chain_filter(df, gaps)
     df["currency"] = df.currency.fillna("USD")
     df["scale"] = df.scale.fillna("millions")

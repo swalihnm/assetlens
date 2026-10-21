@@ -39,7 +39,7 @@ class EdgarClient:
                 time.sleep(wait)
             self._last = time.monotonic()
 
-    @retry(stop=stop_after_attempt(5), wait=wait_exponential(min=1, max=30))
+    @retry(stop=stop_after_attempt(9), wait=wait_exponential(min=2, max=90))
     def _fetch(self, url: str) -> bytes:
         self._throttle()
         self.network_calls += 1

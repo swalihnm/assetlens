@@ -7,7 +7,7 @@ models:
       - name: ticker
         tests:
           - not_null
-          - accepted_values: {values: ['GS', 'BLK', 'TROW', 'IVZ']}
+          - accepted_values: {values: ['GS', 'BLK', 'TROW', 'IVZ', 'MS', 'MSWM', 'JPM', 'BEN']}
       - name: accession_no
         tests: [not_null]
       - name: method

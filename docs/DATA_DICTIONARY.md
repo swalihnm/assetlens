@@ -3,7 +3,7 @@
 Tables flagged **synthetic** carry a `synthetic = true` column.
 
 ## comparability_flags
-15 rows
+21 rows
 
 | Column | Type |
 |---|---|
@@ -154,7 +154,7 @@ Tables flagged **synthetic** carry a `synthetic = true` column.
 | synthetic | BOOLEAN |
 
 ## fact_financials
-1,550 rows
+2,225 rows
 
 | Column | Type |
 |---|---|
@@ -262,7 +262,7 @@ Tables flagged **synthetic** carry a `synthetic = true` column.
 | synthetic | BOOLEAN |
 
 ## fact_provenance
-1,550 rows
+2,225 rows
 
 | Column | Type |
 |---|---|
@@ -324,7 +324,7 @@ Tables flagged **synthetic** carry a `synthetic = true` column.
 | rank | BIGINT |
 
 ## mart_aum_decomposition
-4 rows
+7 rows
 
 | Column | Type |
 |---|---|
@@ -394,7 +394,7 @@ Tables flagged **synthetic** carry a `synthetic = true` column.
 | synthetic | BOOLEAN |
 
 ## mart_fee_compression
-4 rows
+6 rows
 
 | Column | Type |
 |---|---|
@@ -409,7 +409,7 @@ Tables flagged **synthetic** carry a `synthetic = true` column.
 | significant | BOOLEAN |
 
 ## mart_market_beta_rolling
-63 rows
+95 rows
 
 | Column | Type |
 |---|---|
@@ -419,7 +419,7 @@ Tables flagged **synthetic** carry a `synthetic = true` column.
 | beta_bond | DOUBLE |
 
 ## mart_market_sensitivity
-4 rows
+6 rows
 
 | Column | Type |
 |---|---|
@@ -473,7 +473,7 @@ Tables flagged **synthetic** carry a `synthetic = true` column.
 | synthetic | BOOLEAN |
 
 ## mart_peer_benchmark
-115 rows
+197 rows
 
 | Column | Type |
 |---|---|
