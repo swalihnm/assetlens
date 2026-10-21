@@ -1,0 +1,25 @@
+# Modelling assumptions with source / owner. Everything here is an ASSUMPTION unless stated "public".
+growth_case:
+  base_location: DIFC
+  locations:               # tax rates flagged "VERIFY current rates" - not legal/tax advice
+    DIFC: {cost_index: 1.00, setup_capex_musd: 4.0, licence_musd_yr: 0.6, tax_rate: 0.09, note: "Dubai; UAE CT 9%, qualifying free-zone income may be 0% - VERIFY"}
+    KAFD: {cost_index: 0.92, setup_capex_musd: 4.5, licence_musd_yr: 0.5, tax_rate: 0.20, note: "Riyadh; KSA CIT 20% on foreign share - VERIFY"}
+    ADGM: {cost_index: 0.98, setup_capex_musd: 3.8, licence_musd_yr: 0.5, tax_rate: 0.09, note: "Abu Dhabi; UAE CT 9% - VERIFY"}
+  years: 7
+  advisors_hired: [6, 8, 8, 8, 6, 4, 4]          # gross hires per year
+  advisor_attrition: 0.08
+  support_per_advisor: 0.4
+  core_staff: 8                                    # MD, compliance, legal, ops, tech (fixed)
+  mature_aum_per_advisor_musd: 400.0
+  ramp_midpoint_years: 1.5
+  ramp_steepness: 1.6
+  client_attrition: 0.05
+  net_revenue_bps: 85.0                            # management fees + lending NII, bps of client AUM
+  advisor_cost_musd: 0.65
+  support_cost_musd: 0.25
+  premises_tech_per_head_musd: 0.06
+  cost_inflation: 0.03
+  regulatory_capital_musd: 15.0                    # tied up in Y0, released at the end of the horizon
+  discount_rate: 0.11                              # ~ cost of equity 10% + 1pt country-risk premium (rationale)
+  terminal_growth: 0.03
+  variable_comp_pct_of_revenue: 0.10

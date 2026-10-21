@@ -4,9 +4,25 @@ version = "0.1.0"
 description = "Asset manager benchmarking, profitability and FP&A platform"
 requires-python = ">=3.11"
 dependencies = [
-  "httpx", "tenacity", "beautifulsoup4", "lxml", "pandas", "numpy", "scipy",
-  "statsmodels", "pydantic>=2", "pandera", "duckdb", "pyyaml", "python-dotenv",
-  "openpyxl", "python-pptx", "matplotlib", "numpy-financial", "pyarrow",
+  "httpx",
+  "tenacity",
+  "beautifulsoup4",
+  "lxml",
+  "pandas",
+  "numpy",
+  "scipy",
+  "statsmodels",
+  "pydantic>=2",
+  "pandera",
+  "duckdb",
+  "pyyaml",
+  "python-dotenv",
+  "openpyxl",
+  "python-pptx",
+  "matplotlib",
+  "numpy-financial",
+  "pyarrow",
+  "formulas>=1.3.4",
 ]
 [project.optional-dependencies]
 dev = ["pytest", "hypothesis", "ruff", "mypy", "pytest-cov", "dbt-duckdb"]
@@ -18,5 +34,6 @@ packages = ["src/assetlens"]
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 pythonpath = ["src"]
+markers = ["slow: recalculates the Excel workbook (about 80 s)"]
 [tool.ruff]
 line-length = 100
