@@ -1,6 +1,6 @@
 # Reconciliation report (auto-generated)
 
-_Generated 2026-10-21 23:30. GS AWM perimeter, 21 quarters._
+_Generated 2026-10-22 10:31. GS AWM perimeter, 21 quarters._
 
 ## GS segment checks
 

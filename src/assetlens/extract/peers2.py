@@ -40,9 +40,9 @@ def _pnl(sp, mt, anchors, labelmap: dict[str, str], ptype: str, accept=None) -> 
 
 MS_IM = {r"^Asset management and related fees": "fees_asset_management", r"^Net revenues$": "net_revenues",
          r"^Compensation and benefits$": "comp_total", r"^Total non-interest expenses$": "opex",
-         r"^Income before provision for income taxes$": "pretax_income"}
+         r"^Income( \(loss\))?( from continuing operations)? before (provision for |\(benefit\) )?income taxes": "pretax_income"}
 MS_WM = {r"^Asset management$": "fees_asset_management", r"^Net revenues$": "net_revenues", r"^Compensation and benefits$": "comp_total",
-         r"^Total non-interest expenses$": "opex", r"^Income before provision for income taxes$": "pretax_income"}
+         r"^Total non-interest expenses$": "opex", r"^Income( \(loss\))?( from continuing operations)? before (provision for |\(benefit\) )?income taxes": "pretax_income"}
 
 
 def ms_aum(sp, mt, begin_date: str) -> list[dict]:
@@ -126,7 +126,7 @@ def run_ms(client: EdgarClient, m: pd.DataFrame) -> pd.DataFrame:
             got = _pnl(sp, mt, anchors, lm, pt)
             if not got and unit == "IM":    # 2019-20 layout: IM identified by size (net revenues < $2.5bn/qtr, < $9bn/yr; fees > half of revenue)
                 cap = 9_000 if annual else 2_500
-                got = _pnl(sp, mt, ["Asset management", "Net revenues", "Compensation and benefits", "Income before"], {**MS_IM, r"^Asset management(\s+\d+)?$": "fees_asset_management"}, pt,
+                got = _pnl(sp, mt, ["Asset management", "Net revenues", "Compensation and benefits", "before"], {**MS_IM, r"^Asset management(\s+\d+)?$": "fees_asset_management"}, pt,
                            accept=lambda g, cap=cap: g.get("net_revenues", {"value": 1e9})["value"] < cap and g.get("fees_asset_management", {"value": 0})["value"] > 0.5 * g["net_revenues"]["value"])
             out += got
         mt = meta("MS", "IM", r.reportDate, r.url, r.accessionNumber, r.form, r.filingDate)

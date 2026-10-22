@@ -31,7 +31,7 @@ COMPARABILITY = pd.DataFrame([
     ("IVZ", "Unit", "Whole company; GAAP revenues include pass-through service/distribution fees; non-GAAP 'net revenues' stored separately."),
     ("IVZ", "Fee yield", "Investment management fees (gross, GAAP) / average AUM, not net of third-party distribution."),
     ("IVZ", "Margin", "GAAP operating income / GAAP operating revenues; adjusted operating margin on net revenues is higher."),
-    ("MS", "Unit", "Investment Management segment; AUM roll-forward parsed for 2021-26 in three layouts (a few quarters missing); P&L from 2021."),
+    ("MS", "Unit", "Investment Management segment; AUM roll-forward parsed for 2021-26 in three layouts; P&L 2019-26 (Q4s derived as FY - Q1..Q3, so segment recasts can distort them)."),
     ("MS", "Margin", "Segment income before taxes / net revenues; compensation ratio available at segment level."),
     ("JPM", "Unit", "Asset & Wealth Management segment; AUM roll-forward 2019-2026; segment P&L 2019-26 (Q4 2019-22 missing). The fee line is relabelled in 2023: 'Asset management, administration and commissions' (to 2022) became 'Asset management fees' (from 2023), a definitional break in fee yield."),
     ("JPM", "Fee yield", "Asset management fees / average AUM; segment also includes Global Private Bank (lending, deposits) so yield is not like-for-like."),

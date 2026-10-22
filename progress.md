@@ -31,7 +31,7 @@ _Last updated: 2026-10-21. Spec: AssetLens_Project_Spec.md. Phase 1 target = F&S
 
 ## Still to do
 1. Claude comparison for the AI layer (needs ANTHROPIC_API_KEY)
-2. Parser coverage: Morgan Stanley IM P&L starts 2020 (Q4 2020-21 P&L missing) and AUM roll-forward 2021-26 complete; all other peers complete
+2. Parser coverage: all seven companies complete (MS Investment Management P&L 2019-26, AUM 2021-26); derived Q4s can reflect segment recasts
 3. Build the .pbix in Power BI Desktop (needs Windows Desktop)
 4. Q3-2026 GS 10-Q (about 30 Oct): rerun extract + warehouse
 
