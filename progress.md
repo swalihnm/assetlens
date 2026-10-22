@@ -5,6 +5,16 @@ _Target role: Goldman Sachs - AWM Management, F&S, Analyst, Bengaluru (https://h
 
 ---
 
+## Links
+
+* **GitHub repository:** https://github.com/swalihnm/assetlens
+* **Clone:** `git clone https://github.com/swalihnm/assetlens.git`
+* **CI status:** https://github.com/swalihnm/assetlens/actions
+* **Board pack (PDF):** https://github.com/swalihnm/assetlens/blob/main/outputs/deck/AssetLens_Board_Pack.pdf
+* **Excel model:** https://github.com/swalihnm/assetlens/blob/main/outputs/excel/AssetLens_PnL_Model.xlsx
+* **Model documentation:** https://github.com/swalihnm/assetlens/blob/main/docs/MODEL_DOCUMENTATION.md
+* **Target role posting:** https://higher.gs.com/roles/184192
+
 ## 1. One-paragraph summary (use as the project blurb)
 
 AssetLens is an end-to-end FP&A and strategic-finance analytics platform for asset and wealth management. It ingests public SEC filings for Goldman Sachs' Asset & Wealth Management segment and six peers (BlackRock, T. Rowe Price, Invesco, Morgan Stanley Investment Management, JPMorgan Asset & Wealth Management, Franklin Resources), benchmarks their operating results, forecasts the P&L with a driver-based model under bull/base/bear/stress scenarios and Monte Carlo, reports fully allocated profitability by business using five cost-allocation methods, prices new mandates on a marginal basis, evaluates a Gulf wealth-office expansion case, and delivers everything through a live-formula Excel model, Power BI assets, a board pack, a Streamlit app, a FastAPI service and a text-to-SQL / RAG assistant. Internal-style data (business costs, advisors, expenses, compensation) is synthetic and calibrated to public segment totals; everything public is traceable to an SEC accession number.
@@ -145,7 +155,7 @@ Detailed notes (method, outputs, validation, limitations) are in `docs/modules/`
 * Translated a nine-item finance requirement set into 16 module specifications with business rules and acceptance criteria; documented model governance (model documentation, 60-row assumptions register, data dictionary, reconciliation report, decisions and data-gap logs) and verified key inputs against primary sources (Goldman's 10-Q margin target, UAE minimum-tax rules).
 
 ### Project line for the Projects section
-**AssetLens - asset-management FP&A platform** (Python, DuckDB, dbt, Excel, Power BI, Streamlit, FastAPI, Docker) · github.com/swalihnm/assetlens
+**AssetLens - asset-management FP&A platform** (Python, DuckDB, dbt, Excel, Power BI, Streamlit, FastAPI, Docker) · https://github.com/swalihnm/assetlens
 
 ## 9. Claims to avoid (accuracy and integrity)
 
