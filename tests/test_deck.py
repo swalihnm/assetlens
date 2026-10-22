@@ -3,9 +3,10 @@ import re
 import pytest
 
 from assetlens.deck.build_deck import OUT, build, numbers
+from assetlens.warehouse.build import DB
 
 
-@pytest.mark.skipif(not OUT.parent.exists(), reason="deck not built")
+@pytest.mark.skipif(not DB.exists(), reason="warehouse not built")
 def test_every_headline_number_matches_warehouse():
     build()
     from pptx import Presentation
@@ -19,6 +20,7 @@ def test_every_headline_number_matches_warehouse():
     assert len(__import__("pptx").Presentation(OUT).slides) == 6
 
 
+@pytest.mark.skipif(not DB.exists(), reason="warehouse not built")
 def test_pdf_rendered_without_overflow():
     from assetlens.deck import render_pdf
     r = render_pdf.render()
