@@ -97,7 +97,7 @@ def stochastic_shocks(eq: np.ndarray, n: int, seed: int = 7) -> dict[str, np.nda
         investments=np.clip(1 + 4.0 * eq + rng.normal(0, 0.6, (n, H)), -1.0, None))
 
 
-def run(n: int = 10_000, threshold: float = 0.25, seed: int = 42) -> dict:
+def run(n: int = 10_000, threshold: float = 0.25, seed: int = 42, save: bool = True) -> dict:
     hist = historical_returns()
     eq, bond = block_bootstrap(hist, n, seed=seed)
     b = load_base()
@@ -115,29 +115,31 @@ def run(n: int = 10_000, threshold: float = 0.25, seed: int = 42) -> dict:
                 pretax_8q_p10=float(np.percentile(res["pretax"].sum(axis=1), 10)),
                 pretax_8q_p50=float(np.percentile(res["pretax"].sum(axis=1), 50)),
                 pretax_8q_p90=float(np.percentile(res["pretax"].sum(axis=1), 90)))
-    con = duckdb.connect(str(DB))
-    con.register("x", fan)
-    con.execute("create or replace table mart_montecarlo_fan as select * from x")
-    con.register("y", pd.DataFrame([prob]))
-    con.execute("create or replace table mart_montecarlo_prob as select * from y")
-    con.close()
-    # fan chart (net revenue and margin)
-    fig, axes = plt.subplots(1, 2, figsize=(10, 3.6), dpi=170)
-    fig.patch.set_facecolor("#fcfcfb")
-    for ax, name, scale, lab in [(axes[0], "net_revenues", 1e-3, "Net revenues ($bn)"), (axes[1], "margin", 100, "Pre-tax margin (%)")]:
-        d = fan[fan.metric == name]
-        ax.fill_between(d.t, d.p10 * scale, d.p90 * scale, color="#2a78d6", alpha=0.18, lw=0)
-        ax.plot(d.t, d.p50 * scale, color="#2a78d6", lw=2)
-        ax.set_title(lab + ": P10-P50-P90", fontsize=9, loc="left")
-        ax.tick_params(labelsize=8)
-        for s in ("top", "right"):
-            ax.spines[s].set_visible(False)
-    axes[1].axhline(threshold * 100, color="#eb6834", lw=1, ls="--")
-    axes[1].text(1, threshold * 100 + 0.3, f"{threshold:.0%} threshold", fontsize=7, color="#52514e")
-    fig.text(0.01, 0.01, "Block-bootstrapped returns; scenario/assumption-driven; not a forecast. AssetLens educational project.", fontsize=6)
-    fig.tight_layout(rect=(0, 0.03, 1, 1))
-    fig.savefig(ROOT / "outputs" / "charts" / "montecarlo_fan.png", facecolor="#fcfcfb")
-    plt.close(fig)
+    if save:
+        con = duckdb.connect(str(DB))
+        con.register("x", fan)
+        con.execute("create or replace table mart_montecarlo_fan as select * from x")
+        con.register("y", pd.DataFrame([prob]))
+        con.execute("create or replace table mart_montecarlo_prob as select * from y")
+        con.close()
+    if save:
+        # fan chart (net revenue and margin)
+        fig, axes = plt.subplots(1, 2, figsize=(10, 3.6), dpi=170)
+        fig.patch.set_facecolor("#fcfcfb")
+        for ax, name, scale, lab in [(axes[0], "net_revenues", 1e-3, "Net revenues ($bn)"), (axes[1], "margin", 100, "Pre-tax margin (%)")]:
+            d = fan[fan.metric == name]
+            ax.fill_between(d.t, d.p10 * scale, d.p90 * scale, color="#2a78d6", alpha=0.18, lw=0)
+            ax.plot(d.t, d.p50 * scale, color="#2a78d6", lw=2)
+            ax.set_title(lab + ": P10-P50-P90", fontsize=9, loc="left")
+            ax.tick_params(labelsize=8)
+            for s in ("top", "right"):
+                ax.spines[s].set_visible(False)
+        axes[1].axhline(threshold * 100, color="#eb6834", lw=1, ls="--")
+        axes[1].text(1, threshold * 100 + 0.3, f"{threshold:.0%} threshold", fontsize=7, color="#52514e")
+        fig.text(0.01, 0.01, "Block-bootstrapped returns; scenario/assumption-driven; not a forecast. AssetLens educational project.", fontsize=6)
+        fig.tight_layout(rect=(0, 0.03, 1, 1))
+        fig.savefig(ROOT / "outputs" / "charts" / "montecarlo_fan.png", facecolor="#fcfcfb")
+        plt.close(fig)
     return dict(fan=fan, prob=prob)
 
 

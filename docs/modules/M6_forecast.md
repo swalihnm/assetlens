@@ -1,0 +1,9 @@
+# M6 Forecast, scenarios, Monte Carlo, backtest, budget
+
+**Method.** Driver model per asset class: AUS rolls with market return and organic flows; management fees = average AUS x yield / 4 with fee compression; incentive fees from alternatives AUS with Q4 seasonality; private banking and lending sensitive to short rates; Investments scenario-scaled; Comp = max(fixed floor, ratio x revenue); non-comp fixed + variable. Class yields are relative assumptions scaled so base-quarter fees are reproduced. Price-volume-mix and headcount x cost-per-head bridges sum exactly. Monte Carlo: 10,000 block-bootstrapped (block 2 quarters) joint equity/bond paths with market-linked incentive, Investments and flow shocks. Backtest: 8 rolling origins, horizons 1-4, 26 forecast/actual pairs, conditional version feeds realised returns; runs logged to MLflow.
+
+**Outputs.** `fact_forecast`, `mart_budget_variance`, `mart_top_down_vs_bottom_up`, `mart_montecarlo_fan` / `_prob`, `mart_backtest_*`, fan chart.
+
+**Results and validation.** Q8 pre-tax margin: base 29.3%, bull 31.2%, bear 25.5%, stress 15.7%. Monte Carlo: P(Q8 margin < 25%) = 3.2%, P(any quarter < 25%) = 13.1%, 8-quarter pre-tax P10/P50/P90 = $11.6bn / $15.3bn / $18.7bn. Backtest MAPE on management fees: model with realised markets 2.5%, model with assumed markets 3.5%, best naive baseline (drift) 4.5%, naive 8.1%, seasonal naive 12.6%. Model reproduces Q2-2026 fees within -3.1%. Bridges and PVM identity are property-tested.
+
+**Limitations.** Scenario paths are assumptions, not forecasts. The bootstrap uses 2016-2026 (strong equity period), so the Monte Carlo median sits above the deterministic base. Backtest sample is small (18 AWM quarters). Top-down budget uses Goldman's published ~30% margin target and an assumed 8% growth (Goldman publishes no revenue growth target).

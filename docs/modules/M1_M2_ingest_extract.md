@@ -1,0 +1,9 @@
+# M1-M2 Ingestion, extraction and reconciliation
+
+**Method.** Rate-limited (8 req/s), disk-cached EDGAR client with a descriptive User-Agent; FRED public CSV. Deterministic HTML-table parsers (`extract/tables.py`) with label + numeric-cell handling (dashes = 0, 'NM' placeholders keep column alignment). AUM roll-forwards come from a generic detector (`extract/rollforward.py`) that tries column alignments and ACCEPTS a candidate only if begin + flows + market + other = end (tolerance max(0.35, 0.05% of end)); the warehouse then requires each quarter's begin to chain with the prior quarter's end. Goldman: every column of every 10-Q/10-K table is stored (current period and recast comparatives), latest filed value wins, 262 restatements logged; Q4 = FY - 9M. Earnings releases (Ex. 99.1) cover BlackRock, Invesco, T. Rowe (2023+) and Franklin; 10-Q/10-K tables cover Morgan Stanley and JPMorgan.
+
+**Outputs.** `data/raw/manifest.csv` (1,071 filings, 7 companies, 2019+), `fact_financials` + `fact_provenance` (2,505 facts with accession, locator, raw text, method), `restatement_log`, `docs/RECONCILIATION_REPORT.md` (auto-generated).
+
+**Results and validation.** Goldman segment checks 19/19 on revenue-line sum, roll-forward closure, begin = prior end and flows-by-class sum. All peers chain with zero breaks. Re-running ingestion makes zero network calls for cached files (verified in a clean clone).
+
+**Limitations.** Goldman's AWM perimeter was re-based in the FY2022 10-K, so its consistent quarterly series starts 2022 Q1 (annual 2020-21 exist). BlackRock's market impact is a residual (no begin/market table in its releases). Derived Q4s (FY - Q1..Q3) can reflect segment recasts (JPMorgan Q4 2020, Morgan Stanley Q4 2019). Parsing was built against these specific filings; a new filing layout needs a parser update (the closure gate refuses to guess).

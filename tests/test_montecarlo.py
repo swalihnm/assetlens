@@ -24,7 +24,7 @@ def test_bootstrap_shapes_and_quantile_order():
     h = historical_returns()
     e, b = block_bootstrap(h, 500)
     assert e.shape == (500, 8) and b.shape == (500, 8)
-    r = run(n=2000)
+    r = run(n=2000, save=False)
     f = r["fan"]
     assert (f.p10 <= f.p50).all() and (f.p50 <= f.p90).all()
     assert 0 <= r["prob"]["margin_below_threshold_q8"] <= r["prob"]["margin_below_threshold_any"] <= 1
